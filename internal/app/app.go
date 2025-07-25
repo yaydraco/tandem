@@ -6,13 +6,13 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/yyovil/tandem/internal/agent"
-	"github.com/yyovil/tandem/internal/config"
-	"github.com/yyovil/tandem/internal/db"
-	"github.com/yyovil/tandem/internal/format"
-	"github.com/yyovil/tandem/internal/logging"
-	"github.com/yyovil/tandem/internal/message"
-	"github.com/yyovil/tandem/internal/session"
+	"github.com/Drax-1/tandem/internal/agent"
+	"github.com/Drax-1/tandem/internal/config"
+	"github.com/Drax-1/tandem/internal/db"
+	"github.com/Drax-1/tandem/internal/format"
+	"github.com/Drax-1/tandem/internal/logging"
+	"github.com/Drax-1/tandem/internal/message"
+	"github.com/Drax-1/tandem/internal/session"
 )
 
 // NOTE: we pass the app instance to bubble components to utilise the services like messages, session etc.
@@ -20,6 +20,7 @@ type App struct {
 	Sessions     session.Service
 	Messages     message.Service
 	Orchestrator agent.Service
+	// ADHD: why we shouldn't initialise all the agents at once right in here?
 }
 
 func New(ctx context.Context, conn *sql.DB) (*App, error) {
@@ -37,8 +38,9 @@ func New(ctx context.Context, conn *sql.DB) (*App, error) {
 		config.Orchestrator,
 		app.Sessions,
 		app.Messages,
+		agent.OrchestratorAgentTools(),
 	)
-	
+
 	if err != nil {
 		logging.Error("Failed to create orchestrator agent", err)
 		return nil, err

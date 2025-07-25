@@ -5,16 +5,16 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Drax-1/tandem/internal/config"
+	"github.com/Drax-1/tandem/internal/models"
+	"github.com/Drax-1/tandem/internal/pubsub"
+	"github.com/Drax-1/tandem/internal/session"
+	"github.com/Drax-1/tandem/internal/tui/bubbles/chat"
+	"github.com/Drax-1/tandem/internal/tui/styles"
+	"github.com/Drax-1/tandem/internal/tui/theme"
+	"github.com/Drax-1/tandem/internal/utils"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/yyovil/tandem/internal/config"
-	"github.com/yyovil/tandem/internal/models"
-	"github.com/yyovil/tandem/internal/pubsub"
-	"github.com/yyovil/tandem/internal/session"
-	"github.com/yyovil/tandem/internal/tui/bubbles/chat"
-	"github.com/yyovil/tandem/internal/tui/styles"
-	"github.com/yyovil/tandem/internal/tui/theme"
-	"github.com/yyovil/tandem/internal/utils"
 )
 
 type StatusCmp interface {
@@ -170,7 +170,6 @@ func (m statusCmp) View() string {
 	status += m.model()
 	return status
 }
-
 
 func (m statusCmp) model() string {
 	t := theme.CurrentTheme()

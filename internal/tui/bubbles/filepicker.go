@@ -11,7 +11,7 @@ package bubbles
 // 	vp "github.com/charmbracelet/bubbles/viewport"
 // 	tea "github.com/charmbracelet/bubbletea"
 // 	"github.com/charmbracelet/lipgloss"
-// 	"github.com/yyovil/tandem/internal/utils"
+// 	"github.com/Drax-1/tandem/internal/utils"
 // )
 
 // type FilePicker struct {
@@ -127,7 +127,6 @@ package bubbles
 
 // 	return fpc.viewport.View()
 // }
-
 
 // func (fpc *FilePicker) GetSelectedFiles() (attachments []utils.Attachment, error error) {
 // 	if len(fpc.SelectedFiles) > 0 {

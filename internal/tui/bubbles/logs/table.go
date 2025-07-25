@@ -4,15 +4,15 @@ import (
 	"encoding/json"
 	"slices"
 
+	"github.com/Drax-1/tandem/internal/logging"
+	"github.com/Drax-1/tandem/internal/pubsub"
+	"github.com/Drax-1/tandem/internal/tui/layout"
+	"github.com/Drax-1/tandem/internal/tui/styles"
+	"github.com/Drax-1/tandem/internal/tui/theme"
+	"github.com/Drax-1/tandem/internal/utils"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/yyovil/tandem/internal/logging"
-	"github.com/yyovil/tandem/internal/pubsub"
-	"github.com/yyovil/tandem/internal/tui/layout"
-	"github.com/yyovil/tandem/internal/tui/styles"
-	"github.com/yyovil/tandem/internal/tui/theme"
-	"github.com/yyovil/tandem/internal/utils"
 )
 
 type TableComponent interface {

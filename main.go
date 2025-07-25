@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/yyovil/tandem/internal/cmd"
-	"github.com/yyovil/tandem/internal/logging"
+	"github.com/Drax-1/tandem/internal/cmd"
+	"github.com/Drax-1/tandem/internal/logging"
 )
 
 func main() {

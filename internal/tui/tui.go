@@ -4,22 +4,22 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/Drax-1/tandem/internal/agent"
+	"github.com/Drax-1/tandem/internal/app"
+	"github.com/Drax-1/tandem/internal/config"
+	"github.com/Drax-1/tandem/internal/logging"
+	"github.com/Drax-1/tandem/internal/pubsub"
+	"github.com/Drax-1/tandem/internal/session"
+	"github.com/Drax-1/tandem/internal/tui/bubbles"
+	"github.com/Drax-1/tandem/internal/tui/bubbles/chat"
+	"github.com/Drax-1/tandem/internal/tui/bubbles/dialog"
+	"github.com/Drax-1/tandem/internal/tui/layout"
+	"github.com/Drax-1/tandem/internal/tui/page"
+	"github.com/Drax-1/tandem/internal/tui/theme"
+	"github.com/Drax-1/tandem/internal/utils"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/yyovil/tandem/internal/agent"
-	"github.com/yyovil/tandem/internal/app"
-	"github.com/yyovil/tandem/internal/config"
-	"github.com/yyovil/tandem/internal/logging"
-	"github.com/yyovil/tandem/internal/pubsub"
-	"github.com/yyovil/tandem/internal/session"
-	"github.com/yyovil/tandem/internal/tui/bubbles"
-	"github.com/yyovil/tandem/internal/tui/bubbles/chat"
-	"github.com/yyovil/tandem/internal/tui/bubbles/dialog"
-	"github.com/yyovil/tandem/internal/tui/layout"
-	"github.com/yyovil/tandem/internal/tui/page"
-	"github.com/yyovil/tandem/internal/tui/theme"
-	"github.com/yyovil/tandem/internal/utils"
 )
 
 const (
@@ -377,7 +377,7 @@ func (a appModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, keys.Logs):
 			return a, a.moveToPage(page.LogsPage)
 		case key.Matches(msg, keys.Help):
-			
+
 			if a.showQuit {
 				return a, nil
 			}

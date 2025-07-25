@@ -3,11 +3,11 @@ package layout
 import (
 	"strings"
 
+	"github.com/Drax-1/tandem/internal/utils"
 	"github.com/charmbracelet/lipgloss"
 	cbAnsi "github.com/charmbracelet/x/ansi"
 	"github.com/muesli/ansi"
 	"github.com/muesli/reflow/truncate"
-	"github.com/yyovil/tandem/internal/utils"
 )
 
 const whitespace = " "

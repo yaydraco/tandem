@@ -9,13 +9,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Drax-1/tandem/internal/config"
+	"github.com/Drax-1/tandem/internal/logging"
+	"github.com/Drax-1/tandem/internal/message"
+	"github.com/Drax-1/tandem/internal/models"
+	toolsPkg "github.com/Drax-1/tandem/internal/tools"
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/yyovil/tandem/internal/config"
-	"github.com/yyovil/tandem/internal/logging"
-	"github.com/yyovil/tandem/internal/message"
-	"github.com/yyovil/tandem/internal/models"
-	toolsPkg "github.com/yyovil/tandem/internal/tools"
 )
 
 type anthropicOptions struct {

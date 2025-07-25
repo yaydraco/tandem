@@ -8,6 +8,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/Drax-1/tandem/internal/logging"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/filters"
@@ -36,7 +37,41 @@ type DockerCli struct {
 	containerId      string
 }
 
-func (d *DockerCli) Info() ToolInfo {
+var dockerCli *DockerCli
+
+func (cli *DockerCli) initialise() error {
+	cli.init.Do(func() {
+		cli.client, cli.initErr = client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
+		if cli.initErr != nil {
+			cli.initErr = fmt.Errorf("failed to create docker client: %w", cli.initErr)
+		}
+	})
+
+	return cli.initErr
+}
+
+// Client returns the APIClient
+func Client() *client.Client {
+	if err := dockerCli.initialise(); err != nil {
+		logging.Error("initialisation failed", err)
+	}
+	return dockerCli.client
+}
+
+// NOTE: when this tool is called, its expected that it was during the initialisation time,
+func NewDockerCli() BaseTool {
+
+	dockerCli = &DockerCli{
+		init:             sync.Once{},
+		initErr:          nil,
+		client:           Client(),
+		containerId:      "",
+		hijackedResponse: nil,
+	}
+	return dockerCli
+}
+
+func (cli *DockerCli) Info() ToolInfo {
 	return ToolInfo{
 		Name:        DockerCliToolName,
 		Description: "A tool to execute arbitary shell commands in a docker container.",

@@ -8,14 +8,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yyovil/tandem/internal/config"
-	"github.com/yyovil/tandem/internal/logging"
-	"github.com/yyovil/tandem/internal/message"
-	"github.com/yyovil/tandem/internal/models"
-	"github.com/yyovil/tandem/internal/provider"
-	"github.com/yyovil/tandem/internal/pubsub"
-	"github.com/yyovil/tandem/internal/session"
-	"github.com/yyovil/tandem/internal/tools"
+	"github.com/Drax-1/tandem/internal/config"
+	"github.com/Drax-1/tandem/internal/logging"
+	"github.com/Drax-1/tandem/internal/message"
+	"github.com/Drax-1/tandem/internal/models"
+	"github.com/Drax-1/tandem/internal/provider"
+	"github.com/Drax-1/tandem/internal/pubsub"
+	"github.com/Drax-1/tandem/internal/session"
+	"github.com/Drax-1/tandem/internal/tools"
 )
 
 // Common errors
@@ -712,7 +712,7 @@ func NewAgent(
 	agentName config.AgentName,
 	sessions session.Service,
 	messages message.Service,
-	// agentTools []tools.BaseTool,
+	agentTools []tools.BaseTool,
 ) (Service, error) {
 	agentProvider, err := createAgentProvider(agentName)
 	if err != nil {
@@ -741,7 +741,7 @@ func NewAgent(
 		provider: agentProvider,
 		messages: messages,
 		sessions: sessions,
-		// tools:             agentTools,
+		tools:             agentTools,
 		titleProvider:     titleProvider,
 		summarizeProvider: summarizeProvider,
 		activeRequests:    sync.Map{},

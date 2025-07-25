@@ -7,19 +7,19 @@ import (
 	"slices"
 	"unicode"
 
+	"github.com/Drax-1/tandem/internal/app"
+	"github.com/Drax-1/tandem/internal/logging"
+	"github.com/Drax-1/tandem/internal/message"
+	"github.com/Drax-1/tandem/internal/session"
+	"github.com/Drax-1/tandem/internal/tui/bubbles/dialog"
+	"github.com/Drax-1/tandem/internal/tui/layout"
+	"github.com/Drax-1/tandem/internal/tui/styles"
+	"github.com/Drax-1/tandem/internal/tui/theme"
+	"github.com/Drax-1/tandem/internal/utils"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/textarea"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/yyovil/tandem/internal/app"
-	"github.com/yyovil/tandem/internal/logging"
-	"github.com/yyovil/tandem/internal/message"
-	"github.com/yyovil/tandem/internal/session"
-	"github.com/yyovil/tandem/internal/tui/bubbles/dialog"
-	"github.com/yyovil/tandem/internal/tui/layout"
-	"github.com/yyovil/tandem/internal/tui/styles"
-	"github.com/yyovil/tandem/internal/tui/theme"
-	"github.com/yyovil/tandem/internal/utils"
 )
 
 type editorCmp struct {

@@ -1,10 +1,9 @@
 package styles
 
 import (
+	"github.com/Drax-1/tandem/internal/tui/theme"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/yyovil/tandem/internal/tui/theme"
 )
-
 
 var (
 	ImageBakcground = "#212121"

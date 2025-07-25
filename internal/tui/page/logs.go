@@ -1,12 +1,12 @@
 package page
 
 import (
+	"github.com/Drax-1/tandem/internal/tui/bubbles/logs"
+	"github.com/Drax-1/tandem/internal/tui/layout"
+	"github.com/Drax-1/tandem/internal/tui/styles"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/yyovil/tandem/internal/tui/bubbles/logs"
-	"github.com/yyovil/tandem/internal/tui/layout"
-	"github.com/yyovil/tandem/internal/tui/styles"
 )
 
 var LogsPage PageID = "logs"

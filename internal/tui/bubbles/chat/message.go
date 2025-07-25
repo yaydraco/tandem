@@ -9,10 +9,10 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/x/ansi"
 
-	"github.com/yyovil/tandem/internal/message"
-	"github.com/yyovil/tandem/internal/tools"
-	"github.com/yyovil/tandem/internal/tui/styles"
-	"github.com/yyovil/tandem/internal/tui/theme"
+	"github.com/Drax-1/tandem/internal/message"
+	"github.com/Drax-1/tandem/internal/tools"
+	"github.com/Drax-1/tandem/internal/tui/styles"
+	"github.com/Drax-1/tandem/internal/tui/theme"
 )
 
 type uiMessageType int

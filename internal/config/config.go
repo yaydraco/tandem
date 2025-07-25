@@ -10,9 +10,9 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/Drax-1/tandem/internal/logging"
+	"github.com/Drax-1/tandem/internal/models"
 	"github.com/spf13/viper"
-	"github.com/yyovil/tandem/internal/logging"
-	"github.com/yyovil/tandem/internal/models"
 )
 
 // Application constants
@@ -884,7 +884,7 @@ func GetAgentPrompt(agentName AgentName, provider models.ModelProvider) (basePro
 			`, basePrompt, RoE)
 		}
 	}
-	
+
 	logging.Debug("GetAgentPrompt", "agent", agentName, "system prompt", basePrompt)
 	return basePrompt
 }

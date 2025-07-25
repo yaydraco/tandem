@@ -3,12 +3,12 @@ package chat
 import (
 	"fmt"
 
+	"github.com/Drax-1/tandem/internal/pubsub"
+	"github.com/Drax-1/tandem/internal/session"
+	"github.com/Drax-1/tandem/internal/tui/styles"
+	"github.com/Drax-1/tandem/internal/tui/theme"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/yyovil/tandem/internal/pubsub"
-	"github.com/yyovil/tandem/internal/session"
-	"github.com/yyovil/tandem/internal/tui/styles"
-	"github.com/yyovil/tandem/internal/tui/theme"
 )
 
 type sidebarCmp struct {

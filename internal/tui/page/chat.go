@@ -3,14 +3,14 @@ package page
 import (
 	"context"
 
+	"github.com/Drax-1/tandem/internal/app"
+	"github.com/Drax-1/tandem/internal/message"
+	"github.com/Drax-1/tandem/internal/session"
+	"github.com/Drax-1/tandem/internal/tui/bubbles/chat"
+	"github.com/Drax-1/tandem/internal/tui/layout"
+	"github.com/Drax-1/tandem/internal/utils"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/yyovil/tandem/internal/app"
-	"github.com/yyovil/tandem/internal/message"
-	"github.com/yyovil/tandem/internal/session"
-	"github.com/yyovil/tandem/internal/tui/bubbles/chat"
-	"github.com/yyovil/tandem/internal/tui/layout"
-	"github.com/yyovil/tandem/internal/utils"
 )
 
 var ChatPage PageID = "chat"

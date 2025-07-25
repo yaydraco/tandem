@@ -4,19 +4,19 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/Drax-1/tandem/internal/app"
+	"github.com/Drax-1/tandem/internal/message"
+	"github.com/Drax-1/tandem/internal/pubsub"
+	"github.com/Drax-1/tandem/internal/session"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/spinner"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/yyovil/tandem/internal/app"
-	"github.com/yyovil/tandem/internal/message"
-	"github.com/yyovil/tandem/internal/pubsub"
-	"github.com/yyovil/tandem/internal/session"
 
-	"github.com/yyovil/tandem/internal/tui/styles"
-	"github.com/yyovil/tandem/internal/tui/theme"
-	"github.com/yyovil/tandem/internal/utils"
+	"github.com/Drax-1/tandem/internal/tui/styles"
+	"github.com/Drax-1/tandem/internal/tui/theme"
+	"github.com/Drax-1/tandem/internal/utils"
 )
 
 type cacheItem struct {
@@ -261,7 +261,7 @@ func (m *messagesCmp) View() string {
 	if len(m.messages) == 0 {
 		content := baseStyle.
 			Width(m.width).
-			Height(m.height-3).
+			Height(m.height - 3).
 			Render(
 				m.initialScreen(),
 			)
