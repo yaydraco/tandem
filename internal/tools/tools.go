@@ -68,7 +68,7 @@ type ToolCall struct {
 
 type BaseTool interface {
 	Info() ToolInfo
-	Run(ctx context.Context, params ToolCall) (ToolResponse, error)
+	Run(ctx context.Context, call ToolCall) (ToolResponse, error)
 }
 
 func GetContextValues(ctx context.Context) (string, string) {

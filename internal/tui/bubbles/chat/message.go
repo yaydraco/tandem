@@ -43,7 +43,7 @@ func renderMessage(msg string, isUser bool, width int, info ...string) string {
 	t := theme.CurrentTheme()
 
 	style := styles.BaseStyle().
-		Width(width - 1).
+		Width(width-1).
 		BorderLeft(true).
 		Foreground(t.TextMuted()).
 		BorderForeground(t.Primary()).
@@ -216,7 +216,7 @@ func getToolAction(name string) string {
 
 	// case agent.AgentToolName:
 	// 	return "Preparing prompt..."
-	case tools.ShellToolName:
+	case tools.DockerCliToolName:
 		return "Executing command..."
 		// TODO: Impl the edit tool. used by project manager.
 		// case tools.EditToolName:
@@ -276,8 +276,8 @@ func renderToolParams(paramWidth int, toolCall message.ToolCall) string {
 	// 	json.Unmarshal([]byte(toolCall.Input), &params)
 	// 	prompt := strings.ReplaceAll(params.Prompt, "\n", " ")
 	// 	return renderParams(paramWidth, prompt)
-	case tools.ShellToolName:
-		var params tools.ShellParams
+	case tools.DockerCliToolName:
+		var params tools.DockerCliParams
 		json.Unmarshal([]byte(toolCall.Input), &params)
 		command := strings.ReplaceAll(params.Command, "\n", " ")
 		return renderParams(paramWidth, command)
@@ -322,7 +322,7 @@ func renderToolResponse(toolCall message.ToolCall, response message.ToolResult, 
 	// 		toMarkdown(resultContent, false, width),
 	// 		t.Background(),
 	// 	)
-	case tools.ShellToolName:
+	case tools.DockerCliToolName:
 		// NOTE: by default, we are going to get a bash shell but then dependending on the type of shell to be used, as configured by the user, it should be mentioned in here.
 		resultContent = fmt.Sprintf("```bash\n%s\n```", resultContent)
 		return styles.ForceReplaceBackgroundWithLipgloss(
