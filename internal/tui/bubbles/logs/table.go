@@ -86,7 +86,7 @@ func (i *tableCmp) SetSize(width int, height int) tea.Cmd {
 }
 
 func (i *tableCmp) BindingKeys() []key.Binding {
-	return layout.KeyMapToSlice(i.table.KeyMap)
+	return utils.KeyMapToSlice(i.table.KeyMap)
 }
 
 func (i *tableCmp) setRows() {

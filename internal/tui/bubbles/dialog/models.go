@@ -265,7 +265,7 @@ func (m *modelDialogCmp) getScrollIndicators(maxWidth int) string {
 }
 
 func (m *modelDialogCmp) BindingKeys() []key.Binding {
-	return layout.KeyMapToSlice(modelKeys)
+	return utils.KeyMapToSlice(modelKeys)
 }
 
 func (m *modelDialogCmp) setupModels() {

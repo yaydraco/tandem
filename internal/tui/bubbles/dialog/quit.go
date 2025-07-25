@@ -126,7 +126,7 @@ func (q *quitDialogCmp) View() string {
 }
 
 func (q *quitDialogCmp) BindingKeys() []key.Binding {
-	return layout.KeyMapToSlice(helpKeys)
+	return utils.KeyMapToSlice(helpKeys)
 }
 
 func NewQuitCmp() QuitDialog {

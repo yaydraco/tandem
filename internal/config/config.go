@@ -59,14 +59,18 @@ type Provider struct {
 type AgentName string
 
 const (
-	Orchestrator          AgentName = "orchestrator"
-	ProjectManager        AgentName = "project_manager"
-	Reconnoiter           AgentName = "reconnoiter"
-	Exploiter             AgentName = "exploiter"
-	VulnerabilityAssessor AgentName = "vulnerability_assessor"
-	AgentSummarizer       AgentName = "summarizer"
-	AgentTask             AgentName = "task"
-	AgentTitle            AgentName = "title"
+	Orchestrator AgentName = "orchestrator"
+
+	// Penetration testing engagement agents
+	Reconnoiter          AgentName = "reconnoiter"
+	VulnerabilityScanner AgentName = "vulnerability_scanner"
+	Exploiter            AgentName = "exploiter"
+	Reporter             AgentName = "reporter"
+
+	// Application purpose agents
+	AgentSummarizer AgentName = "summarizer"
+	AgentTask       AgentName = "task"
+	AgentTitle      AgentName = "title"
 )
 
 type Agent struct {

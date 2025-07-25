@@ -37,13 +37,13 @@ func (m *sidebarCmp) View() string {
 
 	return baseStyle.
 		Width(m.width).
-		PaddingLeft(4).
-		PaddingRight(2).
-		Height(m.height - 1).
+		PaddingLeft(2).
+		PaddingTop(1).
+		Height(m.height).
 		Render(
 			lipgloss.JoinVertical(
 				lipgloss.Top,
-				header(m.width),
+				header(m.width-2),
 				" ",
 				m.sessionSection(),
 			),

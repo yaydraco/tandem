@@ -24,7 +24,7 @@ const (
 	DockerImage       = "kali:withtools"
 )
 
-type DockerCliParams struct {
+type DockerCliArgs struct {
 	Command string   `json:"command"`
 	Args    []string `json:"args,omitempty"`
 }
@@ -60,14 +60,14 @@ func Client() *client.Client {
 
 // NOTE: when this tool is called, its expected that it was during the initialisation time,
 func NewDockerCli() BaseTool {
-
 	dockerCli = &DockerCli{
 		init:             sync.Once{},
 		initErr:          nil,
-		client:           Client(),
 		containerId:      "",
 		hijackedResponse: nil,
 	}
+	dockerCli.client = Client()
+	
 	return dockerCli
 }
 
@@ -94,18 +94,18 @@ func (cli *DockerCli) Info() ToolInfo {
 }
 
 func (cli *DockerCli) Run(ctx context.Context, call ToolCall) (ToolResponse, error) {
-	var params DockerCliParams
-	if err := json.Unmarshal([]byte(call.Input), &params); err != nil {
-		return NewTextErrorResponse("Failed to parse fetch parameters: " + err.Error()), nil
+	var args DockerCliArgs
+	if err := json.Unmarshal([]byte(call.Input), &args); err != nil {
+		return NewTextErrorResponse("Failed to parse docker cli arguments: " + err.Error()), nil
 	}
 
-	if params.Command == "" {
+	if args.Command == "" {
 		return NewTextErrorResponse("command is required for DockerCli tool"), nil
 	}
 
-	commandLine := params.Command
-	if len(params.Args) != 0 {
-		commandLine += " " + strings.Join(params.Args, " ")
+	commandLine := args.Command
+	if len(args.Args) != 0 {
+		commandLine += " " + strings.Join(args.Args, " ")
 	}
 	// NOTE: when using tty in normal mode, input is line buffered, implying you need to press enter to send the command. thus appending a newline.
 	commandLine += "\n"

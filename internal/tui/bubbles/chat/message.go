@@ -277,7 +277,7 @@ func renderToolParams(paramWidth int, toolCall message.ToolCall) string {
 	// 	prompt := strings.ReplaceAll(params.Prompt, "\n", " ")
 	// 	return renderParams(paramWidth, prompt)
 	case tools.DockerCliToolName:
-		var params tools.DockerCliParams
+		var params tools.DockerCliArgs
 		json.Unmarshal([]byte(toolCall.Input), &params)
 		command := strings.ReplaceAll(params.Command, "\n", " ")
 		return renderParams(paramWidth, command)

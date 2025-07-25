@@ -1,6 +1,7 @@
 package layout
 
 import (
+	"github.com/Drax-1/tandem/internal/tui/theme"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -41,6 +42,7 @@ func (c *container) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (c *container) View() string {
+	t := theme.CurrentTheme()
 	style := lipgloss.NewStyle()
 	width := c.width
 	height := c.height
@@ -68,7 +70,8 @@ func (c *container) View() string {
 		PaddingTop(c.paddingTop).
 		PaddingRight(c.paddingRight).
 		PaddingBottom(c.paddingBottom).
-		PaddingLeft(c.paddingLeft)
+		PaddingLeft(c.paddingLeft).
+		BorderBackground(t.Background())
 
 	return style.Render(c.content.View())
 }

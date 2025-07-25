@@ -492,7 +492,7 @@ func (a appModel) View() string {
 	}
 
 	if a.showHelp {
-		bindings := layout.KeyMapToSlice(keys)
+		bindings := utils.KeyMapToSlice(keys)
 		if p, ok := a.pages[a.currentPage].(layout.Bindings); ok {
 			bindings = append(bindings, p.BindingKeys()...)
 		}

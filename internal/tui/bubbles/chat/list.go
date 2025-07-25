@@ -173,30 +173,32 @@ func (m *messagesCmp) renderView() {
 	m.uiMessages = make([]uiMessage, 0)
 	pos := 0
 	baseStyle := styles.BaseStyle()
-
-	if m.width == 0 {
+	// NOTE: accounts for the padding in the viewport containing all the rendered messages.
+	width := m.width - 2
+	if width == 0 {
 		return
 	}
 	for _, msg := range m.messages {
 		switch msg.Role {
 		case message.User:
-			if cache, ok := m.cachedContent[msg.ID]; ok && cache.width == m.width {
+			if cache, ok := m.cachedContent[msg.ID]; ok && cache.width == width {
 				m.uiMessages = append(m.uiMessages, cache.content...)
 				continue
 			}
 			userMsg := renderUserMessage(
 				msg,
-				m.width,
+				width,
 				pos,
 			)
+
 			m.uiMessages = append(m.uiMessages, userMsg)
 			m.cachedContent[msg.ID] = cacheItem{
-				width:   m.width,
+				width:   width,
 				content: []uiMessage{userMsg},
 			}
 			pos += userMsg.height + 1 // + 1 for spacing
 		case message.Assistant:
-			if cache, ok := m.cachedContent[msg.ID]; ok && cache.width == m.width {
+			if cache, ok := m.cachedContent[msg.ID]; ok && cache.width == width {
 				m.uiMessages = append(m.uiMessages, cache.content...)
 				continue
 			}
@@ -206,7 +208,7 @@ func (m *messagesCmp) renderView() {
 				msg,
 				m.messages,
 				isSummary,
-				m.width,
+				width,
 				pos,
 			)
 			for _, msg := range assistantMessages {
@@ -214,7 +216,7 @@ func (m *messagesCmp) renderView() {
 				pos += msg.height + 1 // + 1 for spacing
 			}
 			m.cachedContent[msg.ID] = cacheItem{
-				width:   m.width,
+				width:   width,
 				content: assistantMessages,
 			}
 		}
@@ -222,18 +224,13 @@ func (m *messagesCmp) renderView() {
 
 	messages := make([]string, 0)
 	for _, v := range m.uiMessages {
-		messages = append(messages, lipgloss.JoinVertical(lipgloss.Left, v.content),
-			baseStyle.
-				Width(m.width).
-				Render(
-					"",
-				),
-		)
+		messages = append(messages, lipgloss.JoinVertical(lipgloss.Left, v.content))
 	}
 
 	m.viewport.SetContent(
 		baseStyle.
 			Width(m.width).
+			Padding(1, 0, 1, 2).
 			Render(
 				lipgloss.JoinVertical(
 					lipgloss.Top,
@@ -261,7 +258,7 @@ func (m *messagesCmp) View() string {
 	if len(m.messages) == 0 {
 		content := baseStyle.
 			Width(m.width).
-			Height(m.height - 3).
+			Height(m.height - 2).
 			Render(
 				m.initialScreen(),
 			)
@@ -345,6 +342,7 @@ func (m *messagesCmp) working() string {
 			text += baseStyle.
 				Width(m.width).
 				Foreground(t.Primary()).
+				PaddingLeft(2).
 				Bold(true).
 				Render(fmt.Sprintf("%s %s ", m.spinner.View(), task))
 		}
@@ -378,13 +376,18 @@ func (m *messagesCmp) help() string {
 	}
 	return baseStyle.
 		Width(m.width).
+		PaddingLeft(2).
 		Render(text)
 }
 
 // TODO: You got to change this. you can display the banner along with a short info about it and leave the user with the docs.
 func (m *messagesCmp) initialScreen() string {
-	baseStyle := styles.BaseStyle()
-	return baseStyle.Width(m.width).Render(header(m.width))
+	return styles.
+		BaseStyle().
+		Width(m.width).
+		PaddingLeft(2).
+		PaddingTop(1).
+		Render(header(m.width))
 }
 
 func (m *messagesCmp) rerender() {

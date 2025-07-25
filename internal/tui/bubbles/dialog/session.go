@@ -186,7 +186,7 @@ func (s *sessionDialogCmp) View() string {
 }
 
 func (s *sessionDialogCmp) BindingKeys() []key.Binding {
-	return layout.KeyMapToSlice(sessionKeys)
+	return utils.KeyMapToSlice(sessionKeys)
 }
 
 func (s *sessionDialogCmp) SetSessions(sessions []session.Session) {

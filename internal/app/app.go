@@ -13,6 +13,7 @@ import (
 	"github.com/Drax-1/tandem/internal/logging"
 	"github.com/Drax-1/tandem/internal/message"
 	"github.com/Drax-1/tandem/internal/session"
+	"github.com/Drax-1/tandem/internal/tools"
 )
 
 // NOTE: we pass the app instance to bubble components to utilise the services like messages, session etc.
@@ -38,7 +39,7 @@ func New(ctx context.Context, conn *sql.DB) (*App, error) {
 		config.Orchestrator,
 		app.Sessions,
 		app.Messages,
-		agent.OrchestratorAgentTools(),
+		tools.OrchestratorAgentTools(),
 	)
 
 	if err != nil {

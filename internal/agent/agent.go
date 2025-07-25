@@ -737,10 +737,10 @@ func NewAgent(
 	}
 
 	agent := &agent{
-		Broker:   pubsub.NewBroker[AgentEvent](),
-		provider: agentProvider,
-		messages: messages,
-		sessions: sessions,
+		Broker:            pubsub.NewBroker[AgentEvent](),
+		provider:          agentProvider,
+		messages:          messages,
+		sessions:          sessions,
 		tools:             agentTools,
 		titleProvider:     titleProvider,
 		summarizeProvider: summarizeProvider,

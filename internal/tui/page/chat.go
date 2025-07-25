@@ -93,7 +93,6 @@ func (cp *chatPage) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (cp *chatPage) setSidebar() tea.Cmd {
 	sidebarContainer := layout.NewContainer(
 		chat.NewSidebarCmp(cp.session),
-		layout.WithPadding(1, 1, 1, 1),
 	)
 	return tea.Batch(cp.layout.SetRightPanel(sidebarContainer), sidebarContainer.Init())
 }
@@ -124,7 +123,12 @@ func (p *chatPage) sendMessage(text string, attachments []message.Attachment) te
 	}
 	return tea.Batch(cmds...)
 }
-
+func (p *chatPage) BindingKeys() []key.Binding {
+	bindings := utils.KeyMapToSlice(keyMap)
+	bindings = append(bindings, p.messages.BindingKeys()...)
+	bindings = append(bindings, p.editor.BindingKeys()...)
+	return bindings
+}
 func NewChatPage(app *app.App) tea.Model {
 
 	messagesContainer := layout.NewContainer(

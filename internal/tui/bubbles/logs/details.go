@@ -9,6 +9,7 @@ import (
 	"github.com/Drax-1/tandem/internal/tui/layout"
 	"github.com/Drax-1/tandem/internal/tui/styles"
 	"github.com/Drax-1/tandem/internal/tui/theme"
+	"github.com/Drax-1/tandem/internal/utils"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
@@ -133,7 +134,7 @@ func (i *detailCmp) SetSize(width int, height int) tea.Cmd {
 }
 
 func (i *detailCmp) BindingKeys() []key.Binding {
-	return layout.KeyMapToSlice(i.viewport.KeyMap)
+	return utils.KeyMapToSlice(i.viewport.KeyMap)
 }
 
 func NewLogsDetails() DetailComponent {

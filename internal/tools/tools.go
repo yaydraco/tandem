@@ -82,3 +82,14 @@ func GetContextValues(ctx context.Context) (string, string) {
 	}
 	return sessionID.(string), messageID.(string)
 }
+
+// NOTE: concatenate it with the role specific tools
+var PenetrationTestingAgentTools = []BaseTool{
+	NewDockerCli(),
+}
+
+func OrchestratorAgentTools() []BaseTool {
+	return []BaseTool{
+		// tools.NewAgentTool(),
+	}
+}

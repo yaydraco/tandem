@@ -1,5 +1,5 @@
 {
-  "$schema": "https://yyovil.github.io/tandem/swarm.schema.json",
+  "$schema": "https://github.com/Drax-1/tandem/blob/feature/dockerToolv2/swarm.schema.json",
   "debug": true,
   "providers": {
     "groq": {
