@@ -9,17 +9,17 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Drax-1/tandem/internal/app"
-	"github.com/Drax-1/tandem/internal/config"
-	"github.com/Drax-1/tandem/internal/logging"
-	"github.com/Drax-1/tandem/internal/message"
-	"github.com/Drax-1/tandem/internal/tui/styles"
-	"github.com/Drax-1/tandem/internal/tui/theme"
-	"github.com/Drax-1/tandem/internal/utils"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/yaydraco/tandem/internal/app"
+	"github.com/yaydraco/tandem/internal/config"
+	"github.com/yaydraco/tandem/internal/logging"
+	"github.com/yaydraco/tandem/internal/message"
+	"github.com/yaydraco/tandem/internal/tui/styles"
+	"github.com/yaydraco/tandem/internal/tui/theme"
+	"github.com/yaydraco/tandem/internal/utils"
 )
 
 const (

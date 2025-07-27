@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Drax-1/tandem/internal/message"
-	"github.com/Drax-1/tandem/internal/models"
-	"github.com/Drax-1/tandem/internal/tools"
+	"github.com/yaydraco/tandem/internal/message"
+	"github.com/yaydraco/tandem/internal/models"
+	"github.com/yaydraco/tandem/internal/tools"
 )
 
 type EventType string

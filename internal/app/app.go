@@ -6,14 +6,14 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/Drax-1/tandem/internal/agent"
-	"github.com/Drax-1/tandem/internal/config"
-	"github.com/Drax-1/tandem/internal/db"
-	"github.com/Drax-1/tandem/internal/format"
-	"github.com/Drax-1/tandem/internal/logging"
-	"github.com/Drax-1/tandem/internal/message"
-	"github.com/Drax-1/tandem/internal/session"
-	"github.com/Drax-1/tandem/internal/tools"
+	"github.com/yaydraco/tandem/internal/agent"
+	"github.com/yaydraco/tandem/internal/config"
+	"github.com/yaydraco/tandem/internal/db"
+	"github.com/yaydraco/tandem/internal/format"
+	"github.com/yaydraco/tandem/internal/logging"
+	"github.com/yaydraco/tandem/internal/message"
+	"github.com/yaydraco/tandem/internal/session"
+	"github.com/yaydraco/tandem/internal/tools"
 )
 
 // NOTE: we pass the app instance to bubble components to utilise the services like messages, session etc.

@@ -1,10 +1,10 @@
 package layout
 
 import (
-	"github.com/Drax-1/tandem/internal/tui/theme"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/yaydraco/tandem/internal/tui/theme"
 )
 
 type Container interface {
@@ -71,7 +71,8 @@ func (c *container) View() string {
 		PaddingRight(c.paddingRight).
 		PaddingBottom(c.paddingBottom).
 		PaddingLeft(c.paddingLeft).
-		BorderBackground(t.Background())
+		BorderBackground(t.Background()).
+		BorderForeground(t.BorderNormal())
 
 	return style.Render(c.content.View())
 }

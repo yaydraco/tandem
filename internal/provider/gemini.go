@@ -9,11 +9,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Drax-1/tandem/internal/config"
-	"github.com/Drax-1/tandem/internal/logging"
-	"github.com/Drax-1/tandem/internal/message"
-	"github.com/Drax-1/tandem/internal/tools"
 	"github.com/google/uuid"
+	"github.com/yaydraco/tandem/internal/config"
+	"github.com/yaydraco/tandem/internal/logging"
+	"github.com/yaydraco/tandem/internal/message"
+	"github.com/yaydraco/tandem/internal/tools"
 	"google.golang.org/genai"
 )
 

@@ -10,9 +10,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Drax-1/tandem/internal/logging"
-	"github.com/Drax-1/tandem/internal/models"
 	"github.com/spf13/viper"
+	"github.com/yaydraco/tandem/internal/logging"
+	"github.com/yaydraco/tandem/internal/models"
 )
 
 // Application constants

@@ -8,14 +8,14 @@ import (
 	"io"
 	"time"
 
-	"github.com/Drax-1/tandem/internal/config"
-	"github.com/Drax-1/tandem/internal/logging"
-	"github.com/Drax-1/tandem/internal/message"
-	"github.com/Drax-1/tandem/internal/models"
-	"github.com/Drax-1/tandem/internal/tools"
 	"github.com/openai/openai-go"
 	"github.com/openai/openai-go/option"
 	"github.com/openai/openai-go/shared"
+	"github.com/yaydraco/tandem/internal/config"
+	"github.com/yaydraco/tandem/internal/logging"
+	"github.com/yaydraco/tandem/internal/message"
+	"github.com/yaydraco/tandem/internal/models"
+	"github.com/yaydraco/tandem/internal/tools"
 )
 
 type openaiOptions struct {

@@ -8,11 +8,11 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Drax-1/tandem/internal/logging"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/client"
+	"github.com/yaydraco/tandem/internal/logging"
 )
 
 /*
@@ -67,7 +67,7 @@ func NewDockerCli() BaseTool {
 		hijackedResponse: nil,
 	}
 	dockerCli.client = Client()
-	
+
 	return dockerCli
 }
 

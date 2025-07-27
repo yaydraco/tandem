@@ -3,13 +3,13 @@ package chat
 import (
 	"fmt"
 
-	"github.com/Drax-1/tandem/internal/config"
-	"github.com/Drax-1/tandem/internal/message"
-	"github.com/Drax-1/tandem/internal/session"
-	"github.com/Drax-1/tandem/internal/tui/styles"
-	"github.com/Drax-1/tandem/internal/tui/theme"
-	"github.com/Drax-1/tandem/internal/version"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/yaydraco/tandem/internal/config"
+	"github.com/yaydraco/tandem/internal/message"
+	"github.com/yaydraco/tandem/internal/session"
+	"github.com/yaydraco/tandem/internal/tui/styles"
+	"github.com/yaydraco/tandem/internal/tui/theme"
+	"github.com/yaydraco/tandem/internal/version"
 )
 
 type SendMsg struct {
@@ -56,7 +56,7 @@ func logo(width int) string {
 }
 
 func repo(width int) string {
-	repo := "https://github.com/Drax-1/tandem"
+	repo := "https://github.com/yaydraco/tandem"
 	t := theme.CurrentTheme()
 
 	return styles.BaseStyle().

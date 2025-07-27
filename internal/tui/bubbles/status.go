@@ -5,16 +5,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Drax-1/tandem/internal/config"
-	"github.com/Drax-1/tandem/internal/models"
-	"github.com/Drax-1/tandem/internal/pubsub"
-	"github.com/Drax-1/tandem/internal/session"
-	"github.com/Drax-1/tandem/internal/tui/bubbles/chat"
-	"github.com/Drax-1/tandem/internal/tui/styles"
-	"github.com/Drax-1/tandem/internal/tui/theme"
-	"github.com/Drax-1/tandem/internal/utils"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/yaydraco/tandem/internal/config"
+	"github.com/yaydraco/tandem/internal/models"
+	"github.com/yaydraco/tandem/internal/pubsub"
+	"github.com/yaydraco/tandem/internal/session"
+	"github.com/yaydraco/tandem/internal/tui/bubbles/chat"
+	"github.com/yaydraco/tandem/internal/tui/styles"
+	"github.com/yaydraco/tandem/internal/tui/theme"
+	"github.com/yaydraco/tandem/internal/utils"
 )
 
 type StatusCmp interface {

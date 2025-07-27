@@ -16,8 +16,8 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/x/ansi"
 	"github.com/sergi/go-diff/diffmatchpatch"
-	"github.com/Drax-1/tandem/internal/config"
-	"github.com/Drax-1/tandem/internal/tui/theme"
+	"github.com/yaydraco/tandem/internal/config"
+	"github.com/yaydraco/tandem/internal/tui/theme"
 )
 
 // -------------------------------------------------------------------------

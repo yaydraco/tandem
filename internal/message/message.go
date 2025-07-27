@@ -7,9 +7,9 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/Drax-1/tandem/internal/db"
-	"github.com/Drax-1/tandem/internal/models"
-	"github.com/Drax-1/tandem/internal/pubsub"
+	"github.com/yaydraco/tandem/internal/db"
+	"github.com/yaydraco/tandem/internal/models"
+	"github.com/yaydraco/tandem/internal/pubsub"
 )
 
 type Message struct {

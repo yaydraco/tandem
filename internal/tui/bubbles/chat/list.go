@@ -4,19 +4,19 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Drax-1/tandem/internal/app"
-	"github.com/Drax-1/tandem/internal/message"
-	"github.com/Drax-1/tandem/internal/pubsub"
-	"github.com/Drax-1/tandem/internal/session"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/spinner"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/yaydraco/tandem/internal/app"
+	"github.com/yaydraco/tandem/internal/message"
+	"github.com/yaydraco/tandem/internal/pubsub"
+	"github.com/yaydraco/tandem/internal/session"
 
-	"github.com/Drax-1/tandem/internal/tui/styles"
-	"github.com/Drax-1/tandem/internal/tui/theme"
-	"github.com/Drax-1/tandem/internal/utils"
+	"github.com/yaydraco/tandem/internal/tui/styles"
+	"github.com/yaydraco/tandem/internal/tui/theme"
+	"github.com/yaydraco/tandem/internal/utils"
 )
 
 type cacheItem struct {

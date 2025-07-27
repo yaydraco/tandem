@@ -4,9 +4,9 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/Drax-1/tandem/internal/db"
-	"github.com/Drax-1/tandem/internal/pubsub"
 	"github.com/google/uuid"
+	"github.com/yaydraco/tandem/internal/db"
+	"github.com/yaydraco/tandem/internal/pubsub"
 )
 
 type Session struct {

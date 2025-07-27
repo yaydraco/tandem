@@ -1,8 +1,8 @@
 package styles
 
 import (
-	"github.com/Drax-1/tandem/internal/tui/theme"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/yaydraco/tandem/internal/tui/theme"
 )
 
 var (

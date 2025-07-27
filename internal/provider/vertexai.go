@@ -4,7 +4,7 @@ import (
 	"context"
 	"os"
 
-	"github.com/Drax-1/tandem/internal/logging"
+	"github.com/yaydraco/tandem/internal/logging"
 	"google.golang.org/genai"
 )
 

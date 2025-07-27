@@ -10,14 +10,14 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	zone "github.com/lrstanley/bubblezone"
 	"github.com/spf13/cobra"
-	"github.com/Drax-1/tandem/internal/app"
-	"github.com/Drax-1/tandem/internal/config"
-	"github.com/Drax-1/tandem/internal/db"
-	"github.com/Drax-1/tandem/internal/format"
-	"github.com/Drax-1/tandem/internal/logging"
-	"github.com/Drax-1/tandem/internal/pubsub"
-	"github.com/Drax-1/tandem/internal/tui"
-	"github.com/Drax-1/tandem/internal/version"
+	"github.com/yaydraco/tandem/internal/app"
+	"github.com/yaydraco/tandem/internal/config"
+	"github.com/yaydraco/tandem/internal/db"
+	"github.com/yaydraco/tandem/internal/format"
+	"github.com/yaydraco/tandem/internal/logging"
+	"github.com/yaydraco/tandem/internal/pubsub"
+	"github.com/yaydraco/tandem/internal/tui"
+	"github.com/yaydraco/tandem/internal/version"
 )
 
 var rootCmd = cobra.Command{
