@@ -154,7 +154,7 @@ func (a *anthropicClient) finishReason(reason string) message.FinishReason {
 	}
 }
 
-func (a *anthropicClient) preparedMessages(messages []anthropic.MessageParam, tools []anthropic.ToolUnionParam) anthropic.MessageNewParams {
+func (a *anthropicClient) preparedMessages(messages []anthropic.MessageParam, tools []anthropic.ToolUnionParam, expectedOutput *string) anthropic.MessageNewParams {
 	var thinkingParam anthropic.ThinkingConfigParamUnion
 	lastMessage := messages[len(messages)-1]
 	isUser := lastMessage.Role == anthropic.MessageParamRoleUser
@@ -172,6 +172,11 @@ func (a *anthropicClient) preparedMessages(messages []anthropic.MessageParam, to
 		}
 	}
 
+	systemMessage := a.providerOptions.systemMessage
+	if expectedOutput != nil && *expectedOutput != "" {
+		systemMessage += "\n\nExpected output format/type: " + *expectedOutput
+	}
+
 	return anthropic.MessageNewParams{
 		Model:       anthropic.Model(a.providerOptions.model.APIModel),
 		MaxTokens:   a.providerOptions.maxTokens,
@@ -181,7 +186,7 @@ func (a *anthropicClient) preparedMessages(messages []anthropic.MessageParam, to
 		Thinking:    thinkingParam,
 		System: []anthropic.TextBlockParam{
 			{
-				Text: a.providerOptions.systemMessage,
+				Text: systemMessage,
 				CacheControl: anthropic.CacheControlEphemeralParam{
 					Type: "ephemeral",
 				},
@@ -190,8 +195,8 @@ func (a *anthropicClient) preparedMessages(messages []anthropic.MessageParam, to
 	}
 }
 
-func (a *anthropicClient) send(ctx context.Context, messages []message.Message, tools []toolsPkg.BaseTool) (resposne *ProviderResponse, err error) {
-	preparedMessages := a.preparedMessages(a.convertMessages(messages), a.convertTools(tools))
+func (a *anthropicClient) send(ctx context.Context, messages []message.Message, tools []toolsPkg.BaseTool, expectedOutput *string) (resposne *ProviderResponse, err error) {
+	preparedMessages := a.preparedMessages(a.convertMessages(messages), a.convertTools(tools), expectedOutput)
 	cfg := config.Get()
 	if cfg.Debug {
 		jsonData, _ := json.Marshal(preparedMessages)
@@ -239,8 +244,8 @@ func (a *anthropicClient) send(ctx context.Context, messages []message.Message, 
 	}
 }
 
-func (a *anthropicClient) stream(ctx context.Context, messages []message.Message, tools []toolsPkg.BaseTool) <-chan ProviderEvent {
-	preparedMessages := a.preparedMessages(a.convertMessages(messages), a.convertTools(tools))
+func (a *anthropicClient) stream(ctx context.Context, messages []message.Message, tools []toolsPkg.BaseTool, expectedOutput *string) <-chan ProviderEvent {
+	preparedMessages := a.preparedMessages(a.convertMessages(messages), a.convertTools(tools), expectedOutput)
 	cfg := config.Get()
 
 	var sessionId string

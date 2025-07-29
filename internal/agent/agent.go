@@ -321,6 +321,7 @@ func (a *agent) Summarize(ctx context.Context, sessionID string) error {
 			summarizeCtx,
 			msgsWithPrompt,
 			make([]tools.BaseTool, 0),
+			nil, // expectedOutput not needed for summarization
 		)
 		if err != nil {
 			event = AgentEvent{
@@ -445,6 +446,7 @@ func (a *agent) generateTitle(ctx context.Context, sessionID string, content str
 			},
 		},
 		make([]tools.BaseTool, 0),
+		nil, // expectedOutput not needed for title generation
 	)
 	if err != nil {
 		return err
@@ -471,7 +473,7 @@ func (a *agent) createUserMessage(ctx context.Context, sessionID, content string
 
 func (a *agent) streamAndHandleEvents(ctx context.Context, sessionID string, msgHistory []message.Message) (message.Message, *message.Message, error) {
 	ctx = context.WithValue(ctx, tools.SessionIDContextKey, sessionID)
-	eventChan := a.provider.StreamResponse(ctx, msgHistory, a.tools)
+	eventChan := a.provider.StreamResponse(ctx, msgHistory, a.tools, nil) // expectedOutput can be added here when needed
 
 	assistantMsg, err := a.messages.Create(ctx, sessionID, message.CreateMessageParams{
 		Role:  message.Assistant,

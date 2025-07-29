@@ -186,9 +186,13 @@ func newCopilotClient(opts providerClientOptions) CopilotClient {
 	}
 }
 
-func (c *copilotClient) convertMessages(messages []message.Message) (copilotMessages []openai.ChatCompletionMessageParamUnion) {
+func (c *copilotClient) convertMessages(messages []message.Message, expectedOutput *string) (copilotMessages []openai.ChatCompletionMessageParamUnion) {
 	// Add system message first
-	copilotMessages = append(copilotMessages, openai.SystemMessage(c.providerOptions.systemMessage))
+	systemMessage := c.providerOptions.systemMessage
+	if expectedOutput != nil && *expectedOutput != "" {
+		systemMessage += "\n\nExpected output format/type: " + *expectedOutput
+	}
+	copilotMessages = append(copilotMessages, openai.SystemMessage(systemMessage))
 
 	for _, msg := range messages {
 		switch msg.Role {
@@ -306,8 +310,8 @@ func (c *copilotClient) preparedParams(messages []openai.ChatCompletionMessagePa
 	return params
 }
 
-func (c *copilotClient) send(ctx context.Context, messages []message.Message, tools []toolsPkg.BaseTool) (response *ProviderResponse, err error) {
-	params := c.preparedParams(c.convertMessages(messages), c.convertTools(tools))
+func (c *copilotClient) send(ctx context.Context, messages []message.Message, tools []toolsPkg.BaseTool, expectedOutput *string) (response *ProviderResponse, err error) {
+	params := c.preparedParams(c.convertMessages(messages, expectedOutput), c.convertTools(tools))
 	cfg := config.Get()
 	var sessionId string
 	requestSeqId := (len(messages) + 1) / 2
@@ -373,8 +377,8 @@ func (c *copilotClient) send(ctx context.Context, messages []message.Message, to
 	}
 }
 
-func (c *copilotClient) stream(ctx context.Context, messages []message.Message, tools []toolsPkg.BaseTool) <-chan ProviderEvent {
-	params := c.preparedParams(c.convertMessages(messages), c.convertTools(tools))
+func (c *copilotClient) stream(ctx context.Context, messages []message.Message, tools []toolsPkg.BaseTool, expectedOutput *string) <-chan ProviderEvent {
+	params := c.preparedParams(c.convertMessages(messages, expectedOutput), c.convertTools(tools))
 	params.StreamOptions = openai.ChatCompletionStreamOptionsParam{
 		IncludeUsage: openai.Bool(true),
 	}

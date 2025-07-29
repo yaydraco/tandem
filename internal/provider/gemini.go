@@ -165,7 +165,7 @@ func (g *geminiClient) finishReason(reason genai.FinishReason) message.FinishRea
 	}
 }
 
-func (g *geminiClient) send(ctx context.Context, messages []message.Message, tools []tools.BaseTool) (*ProviderResponse, error) {
+func (g *geminiClient) send(ctx context.Context, messages []message.Message, tools []tools.BaseTool, expectedOutput *string) (*ProviderResponse, error) {
 	// Convert messages
 	geminiMessages := g.convertMessages(messages)
 
@@ -177,10 +177,16 @@ func (g *geminiClient) send(ctx context.Context, messages []message.Message, too
 
 	history := geminiMessages[:len(geminiMessages)-1] // All but last message
 	lastMsg := geminiMessages[len(geminiMessages)-1]
+	
+	systemMessage := g.providerOptions.systemMessage
+	if expectedOutput != nil && *expectedOutput != "" {
+		systemMessage += "\n\nExpected output format/type: " + *expectedOutput
+	}
+	
 	config := &genai.GenerateContentConfig{
 		MaxOutputTokens: int32(g.providerOptions.maxTokens),
 		SystemInstruction: &genai.Content{
-			Parts: []*genai.Part{{Text: g.providerOptions.systemMessage}},
+			Parts: []*genai.Part{{Text: systemMessage}},
 		},
 	}
 	if len(tools) > 0 {
@@ -253,7 +259,7 @@ func (g *geminiClient) send(ctx context.Context, messages []message.Message, too
 	}
 }
 
-func (g *geminiClient) stream(ctx context.Context, messages []message.Message, tools []tools.BaseTool) <-chan ProviderEvent {
+func (g *geminiClient) stream(ctx context.Context, messages []message.Message, tools []tools.BaseTool, expectedOutput *string) <-chan ProviderEvent {
 	// Convert messages
 	geminiMessages := g.convertMessages(messages)
 
@@ -265,10 +271,16 @@ func (g *geminiClient) stream(ctx context.Context, messages []message.Message, t
 
 	history := geminiMessages[:len(geminiMessages)-1] // All but last message
 	lastMsg := geminiMessages[len(geminiMessages)-1]
+	
+	systemMessage := g.providerOptions.systemMessage
+	if expectedOutput != nil && *expectedOutput != "" {
+		systemMessage += "\n\nExpected output format/type: " + *expectedOutput
+	}
+	
 	config := &genai.GenerateContentConfig{
 		MaxOutputTokens: int32(g.providerOptions.maxTokens),
 		SystemInstruction: &genai.Content{
-			Parts: []*genai.Part{{Text: g.providerOptions.systemMessage}},
+			Parts: []*genai.Part{{Text: systemMessage}},
 		},
 	}
 	if len(tools) > 0 {
