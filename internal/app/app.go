@@ -38,7 +38,7 @@ func New(ctx context.Context, conn *sql.DB) (*App, error) {
 		app.Sessions,
 		app.Messages,
 	)
-	
+
 	if err != nil {
 		logging.Error("Failed to create orchestrator agent", err)
 		return nil, err

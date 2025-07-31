@@ -128,7 +128,6 @@ package bubbles
 // 	return fpc.viewport.View()
 // }
 
-
 // func (fpc *FilePicker) GetSelectedFiles() (attachments []utils.Attachment, error error) {
 // 	if len(fpc.SelectedFiles) > 0 {
 // 		// fileStat, err := os.Stat(fs)

@@ -5,7 +5,6 @@ import (
 	"github.com/yyovil/tandem/internal/tui/theme"
 )
 
-
 var (
 	ImageBakcground = "#212121"
 )
