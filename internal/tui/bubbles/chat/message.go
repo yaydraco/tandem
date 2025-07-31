@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/x/ansi"
@@ -43,7 +44,7 @@ func renderMessage(msg string, isUser bool, width int, info ...string) string {
 	t := theme.CurrentTheme()
 
 	style := styles.BaseStyle().
-		Width(width - 1).
+		Width(width-1).
 		BorderLeft(true).
 		Foreground(t.TextMuted()).
 		BorderForeground(t.Primary()).
@@ -132,11 +133,12 @@ func renderAssistantMessage(
 	if finished {
 		switch finishData.Reason {
 		case message.FinishReasonEndTurn:
-			took := formatTimestampDiff(msg.CreatedAt, finishData.Time)
+			currentTime := getCurrentTimeFormatted()
+			took := formatTimestampDiffSeconds(msg.CreatedAt, finishData.Time)
 			info = append(info, baseStyle.
 				Width(width-1).
 				Foreground(t.TextMuted()).
-				Render(fmt.Sprintf(" (%s)", took)),
+				Render(fmt.Sprintf(" %s (%s)", currentTime, took)),
 			)
 		case message.FinishReasonCanceled:
 			info = append(info, baseStyle.
@@ -467,4 +469,15 @@ func formatTimestampDiff(start, end int64) string {
 		return fmt.Sprintf("%.1fs", diffSeconds)
 	}
 	return fmt.Sprintf("%.1fm", diffSeconds/60)
+}
+
+// Helper function to format the time difference in seconds only
+func formatTimestampDiffSeconds(start, end int64) string {
+	diffSeconds := float64(end-start) / 1000.0 // Convert to seconds
+	return fmt.Sprintf("%.1fs", diffSeconds)
+}
+
+// Helper function to get current time formatted as HH:MM:SS
+func getCurrentTimeFormatted() string {
+	return time.Now().Format("15:04:05")
 }

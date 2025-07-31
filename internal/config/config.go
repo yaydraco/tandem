@@ -884,7 +884,7 @@ func GetAgentPrompt(agentName AgentName, provider models.ModelProvider) (basePro
 			`, basePrompt, RoE)
 		}
 	}
-	
+
 	logging.Debug("GetAgentPrompt", "agent", agentName, "system prompt", basePrompt)
 	return basePrompt
 }
