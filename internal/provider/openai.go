@@ -68,9 +68,6 @@ func newOpenAIClient(opts providerClientOptions) OpenAIClient {
 func (o *openaiClient) convertMessages(messages []message.Message, expectedOutput *string) (openaiMessages []openai.ChatCompletionMessageParamUnion) {
 	// Add system message first
 	systemMessage := o.providerOptions.systemMessage
-	if expectedOutput != nil && *expectedOutput != "" {
-		systemMessage += "\n\nExpected output format/type: " + *expectedOutput
-	}
 	openaiMessages = append(openaiMessages, openai.SystemMessage(systemMessage))
 
 	for _, msg := range messages {
@@ -163,7 +160,7 @@ func (o *openaiClient) finishReason(reason string) message.FinishReason {
 	}
 }
 
-func (o *openaiClient) preparedParams(messages []openai.ChatCompletionMessageParamUnion, tools []openai.ChatCompletionToolParam) openai.ChatCompletionNewParams {
+func (o *openaiClient) preparedParams(messages []openai.ChatCompletionMessageParamUnion, tools []openai.ChatCompletionToolParam, expectedOutput *string) openai.ChatCompletionNewParams {
 	params := openai.ChatCompletionNewParams{
 		Model:    openai.ChatModel(o.providerOptions.model.APIModel),
 		Messages: messages,
@@ -186,11 +183,29 @@ func (o *openaiClient) preparedParams(messages []openai.ChatCompletionMessagePar
 		params.MaxTokens = openai.Int(o.providerOptions.maxTokens)
 	}
 
+	// Add structured output schema if provided
+	if expectedOutput != nil && *expectedOutput != "" {
+		// Parse the expectedOutput as JSON schema
+		var schema map[string]interface{}
+		if err := json.Unmarshal([]byte(*expectedOutput), &schema); err == nil {
+			params.ResponseFormat = openai.ChatCompletionResponseFormatParam{
+				Type: openai.ChatCompletionResponseFormatTypeJSONSchema,
+				Schema: openai.ChatCompletionResponseFormatSchemaParam{
+					Type:       "object",
+					Properties: schema,
+				},
+			}
+		} else {
+			// Fallback to text format if schema parsing fails
+			logging.Warn("Failed to parse expectedOutput as JSON schema, falling back to text format", "error", err)
+		}
+	}
+
 	return params
 }
 
 func (o *openaiClient) send(ctx context.Context, messages []message.Message, tools []tools.BaseTool, expectedOutput *string) (response *ProviderResponse, err error) {
-	params := o.preparedParams(o.convertMessages(messages, expectedOutput), o.convertTools(tools))
+	params := o.preparedParams(o.convertMessages(messages, expectedOutput), o.convertTools(tools), expectedOutput)
 	cfg := config.Get()
 	if cfg.Debug {
 		jsonData, _ := json.Marshal(params)
@@ -243,7 +258,7 @@ func (o *openaiClient) send(ctx context.Context, messages []message.Message, too
 }
 
 func (o *openaiClient) stream(ctx context.Context, messages []message.Message, tools []tools.BaseTool, expectedOutput *string) <-chan ProviderEvent {
-	params := o.preparedParams(o.convertMessages(messages, expectedOutput), o.convertTools(tools))
+	params := o.preparedParams(o.convertMessages(messages, expectedOutput), o.convertTools(tools), expectedOutput)
 	params.StreamOptions = openai.ChatCompletionStreamOptionsParam{
 		IncludeUsage: openai.Bool(true),
 	}

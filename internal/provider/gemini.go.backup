@@ -165,6 +165,61 @@ func (g *geminiClient) finishReason(reason genai.FinishReason) message.FinishRea
 	}
 }
 
+func (g *geminiClient) prepareConfig(tools []tools.BaseTool, expectedOutput *string) *genai.GenerateContentConfig {
+	config := &genai.GenerateContentConfig{
+		MaxOutputTokens: int32(g.providerOptions.maxTokens),
+		SystemInstruction: &genai.Content{
+			Parts: []*genai.Part{{Text: g.providerOptions.systemMessage}},
+		},
+	}
+	
+	// Add structured output schema if provided
+	if expectedOutput != nil && *expectedOutput != "" {
+		// Parse the expectedOutput as JSON schema
+		var schema map[string]interface{}
+		if err := json.Unmarshal([]byte(*expectedOutput), &schema); err == nil {
+			// Convert the schema to Gemini's format
+			geminiSchema := convertToGeminiSchema(schema)
+			config.GenerationConfig = &genai.GenerationConfig{
+				ResponseMimeType: "application/json",
+				ResponseSchema:   geminiSchema,
+			}
+		} else {
+			// Fallback to text format if schema parsing fails
+			logging.Warn("Failed to parse expectedOutput as JSON schema, falling back to text format", "error", err)
+		}
+	}
+	
+	if len(tools) > 0 {
+		config.Tools = g.convertTools(tools)
+	}
+	
+	return config
+}
+
+func convertToGeminiSchema(schema map[string]interface{}) *genai.Schema {
+	// Convert JSON schema to Gemini's schema format
+	geminiSchema := &genai.Schema{
+		Type: genai.TypeObject,
+	}
+	
+	if properties, ok := schema["properties"].(map[string]interface{}); ok {
+		geminiSchema.Properties = convertSchemaProperties(properties)
+	}
+	
+	if required, ok := schema["required"].([]interface{}); ok {
+		requiredStrings := make([]string, len(required))
+		for i, req := range required {
+			if str, ok := req.(string); ok {
+				requiredStrings[i] = str
+			}
+		}
+		geminiSchema.Required = requiredStrings
+	}
+	
+	return geminiSchema
+}
+
 func (g *geminiClient) send(ctx context.Context, messages []message.Message, tools []tools.BaseTool, expectedOutput *string) (*ProviderResponse, error) {
 	// Convert messages
 	geminiMessages := g.convertMessages(messages)
