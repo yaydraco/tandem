@@ -33,4 +33,3 @@ func KeyMapToSlice(t any) (bindings []key.Binding) {
 	}
 	return
 }
-

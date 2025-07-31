@@ -171,7 +171,6 @@ func (m statusCmp) View() string {
 	return status
 }
 
-
 func (m statusCmp) model() string {
 	t := theme.CurrentTheme()
 

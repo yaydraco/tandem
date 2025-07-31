@@ -43,7 +43,7 @@ func renderMessage(msg string, isUser bool, width int, info ...string) string {
 	t := theme.CurrentTheme()
 
 	style := styles.BaseStyle().
-		Width(width - 1).
+		Width(width-1).
 		BorderLeft(true).
 		Foreground(t.TextMuted()).
 		BorderForeground(t.Primary()).
