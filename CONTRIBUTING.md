@@ -213,12 +213,6 @@ go test -cover ./...
 go test ./internal/config
 ```
 
-### Test Structure
-
-The project currently has minimal test coverage. Tests are located alongside the source code in `*_test.go` files. The main test file is:
-
-- `internal/config/config_test.go`: Tests for configuration and agent prompt generation
-
 ### Writing Tests
 
 When adding new functionality, please include tests:
@@ -226,29 +220,6 @@ When adding new functionality, please include tests:
 1. **Unit tests**: Test individual functions and methods
 2. **Integration tests**: Test interactions between components
 3. **Table-driven tests**: Use Go's table-driven test pattern for multiple test cases
-
-Example test structure:
-```go
-func TestYourFunction(t *testing.T) {
-    testCases := []struct {
-        name     string
-        input    string
-        expected string
-    }{
-        {"case1", "input1", "expected1"},
-        {"case2", "input2", "expected2"},
-    }
-
-    for _, tc := range testCases {
-        t.Run(tc.name, func(t *testing.T) {
-            result := YourFunction(tc.input)
-            if result != tc.expected {
-                t.Errorf("Expected %v, got %v", tc.expected, result)
-            }
-        })
-    }
-}
-```
 
 ## Code Generation
 
@@ -413,49 +384,7 @@ Use conventional commit format:
 - `test:` adding/updating tests
 - `chore:` maintenance tasks
 
-## Code Style and Standards
 
-### Go Style Guidelines
-
-1. **Follow Go conventions**:
-   - Use `gofmt` for formatting
-   - Follow Go naming conventions
-   - Use Go modules for dependencies
-
-2. **Code organization**:
-   - Keep packages focused and cohesive
-   - Use interfaces for abstraction
-   - Handle errors explicitly
-
-3. **Documentation**:
-   - Add comments for exported functions
-   - Use Go doc conventions
-   - Keep comments concise but clear
-
-### Project-Specific Guidelines
-
-1. **Use `any` instead of `interface{}`** (per project preference)
-2. **Stick to existing dependencies** - avoid adding new dependencies without discussion
-3. **When implementing interfaces**, provide method signatures with empty bodies initially
-
-Example interface implementation:
-```go
-// Generate a stub implementing BaseTool interface for DockerCli
-func (d *DockerCli) Info() tools.ToolInfo {}
-```
-
-### Linting and Formatting
-
-```bash
-# Format code
-go fmt ./...
-
-# Run go vet
-go vet ./...
-
-# If you have golangci-lint installed
-golangci-lint run
-```
 
 ## Troubleshooting
 
