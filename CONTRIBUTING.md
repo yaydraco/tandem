@@ -30,34 +30,26 @@ Before you begin, ensure you have the following installed:
    - Install Docker: https://docs.docker.com/get-docker/
    - Verify: `docker --version`
 
-2. **Nix Package Manager** (recommended approach)
-   - Install Nix: https://nixos.org/download
-   - Enable flakes: `echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
-
-### Alternative (if not using Nix)
-
-1. **Go 1.24.2+**
+2. **Go 1.24.2+**
    - Download from: https://golang.org/dl/
    - Verify: `go version`
 
-2. **Docker**
-   - Install Docker: https://docs.docker.com/get-docker/
-   - Verify: `docker --version`
-
 ### Optional
 
-1. **Vagrant** (for testing environments)
+1. **Nix Package Manager** (for advanced users)
+   - Install Nix: https://nixos.org/download
+   - Enable flakes: `echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
+
+2. **Vagrant** (for testing environments)
    - Download from: https://www.vagrantup.com/downloads
    - Used for setting up vulnerable lab environments (Metasploitable3)
 
-2. **Git** (for version control)
+3. **Git** (for version control)
    - Most systems have this pre-installed
 
 ## Development Environment Setup
 
-### Using Nix (Recommended)
-
-The project uses Nix flakes to provide a consistent, reproducible development environment across all platforms.
+### Standard Setup
 
 1. **Clone the repository**:
    ```bash
@@ -79,6 +71,33 @@ The project uses Nix flakes to provide a consistent, reproducible development en
    # Add other providers as needed
    ```
 
+3. **Install dependencies**:
+   ```bash
+   go mod download
+   ```
+
+4. **Install development tools**:
+   ```bash
+   go install golang.org/x/tools/gopls@latest
+   ```
+
+### Using Nix (Optional)
+
+If you prefer to use Nix for a reproducible development environment:
+
+1. **Clone the repository** (if not done already):
+   ```bash
+   git clone https://github.com/yaydraco/tandem.git
+   cd tandem
+   ```
+
+2. **Set up environment variables** (if not done already):
+   ```bash
+   cp .example.env .env
+   ```
+   
+   Edit `.env` and add your API keys for the AI providers you want to use.
+
 3. **Enter the development shell**:
    ```bash
    nix develop
@@ -91,27 +110,6 @@ The project uses Nix flakes to provide a consistent, reproducible development en
    - Docker for container runtime
    - Vagrant for lab environments
    - Starship prompt configuration
-
-### Manual Setup (Alternative)
-
-If you prefer not to use Nix:
-
-1. **Clone and setup**:
-   ```bash
-   git clone https://github.com/yaydraco/tandem.git
-   cd tandem
-   cp .example.env .env
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   go mod download
-   ```
-
-3. **Install development tools**:
-   ```bash
-   go install golang.org/x/tools/gopls@latest
-   ```
 
 ## Building the Project
 
