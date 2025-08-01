@@ -17,12 +17,8 @@ Tandem is a terminal-based application that provides a swarm of AI agents to ass
 ### Key Technologies
 
 - **Go 1.24.2+**: Primary programming language
+- **Docker**: Container runtime for tool execution
 - **Nix Flake**: Development environment management
-- **Bubble Tea**: Terminal User Interface framework
-- **SQLC**: Type-safe SQL code generation
-- **SQLite**: Database for session and message storage
-- **Vagrant**: Vulnerable lab environment setup
-- **Multiple AI Provider SDKs**: OpenAI, Anthropic, Gemini, Groq, etc.
 
 ## Prerequisites
 
@@ -30,7 +26,11 @@ Before you begin, ensure you have the following installed:
 
 ### Required
 
-1. **Nix Package Manager** (recommended approach)
+1. **Docker**
+   - Install Docker: https://docs.docker.com/get-docker/
+   - Verify: `docker --version`
+
+2. **Nix Package Manager** (recommended approach)
    - Install Nix: https://nixos.org/download
    - Enable flakes: `echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
 
@@ -40,8 +40,9 @@ Before you begin, ensure you have the following installed:
    - Download from: https://golang.org/dl/
    - Verify: `go version`
 
-2. **SQLC** (for database code generation)
-   - Install: `go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest`
+2. **Docker**
+   - Install Docker: https://docs.docker.com/get-docker/
+   - Verify: `docker --version`
 
 ### Optional
 
@@ -87,7 +88,7 @@ The project uses Nix flakes to provide a consistent, reproducible development en
    - Go compiler and tools
    - Go language server (gopls)
    - Go development tools
-   - SQLC for database code generation
+   - Docker for container runtime
    - Vagrant for lab environments
    - Starship prompt configuration
 
@@ -109,7 +110,6 @@ If you prefer not to use Nix:
 
 3. **Install development tools**:
    ```bash
-   go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
    go install golang.org/x/tools/gopls@latest
    ```
 
