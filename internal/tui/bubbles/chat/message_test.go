@@ -19,25 +19,49 @@ func TestFormatTimestampDiffSeconds(t *testing.T) {
 			name:     "less than 1 second",
 			start:    1000,
 			end:      1500,
-			expected: "0.5s",
+			expected: "0s",
 		},
 		{
 			name:     "exactly 1 second",
 			start:    1000,
 			end:      2000,
-			expected: "1.0s",
+			expected: "1s",
 		},
 		{
 			name:     "multiple seconds",
 			start:    1000,
 			end:      3500,
-			expected: "2.5s",
+			expected: "2s",
 		},
 		{
-			name:     "more than 60 seconds",
+			name:     "exactly 60 seconds",
 			start:    1000,
 			end:      61000,
-			expected: "60.0s",
+			expected: "1m",
+		},
+		{
+			name:     "1 minute 23 seconds",
+			start:    1000,
+			end:      84000,
+			expected: "1m23s",
+		},
+		{
+			name:     "exactly 1 hour",
+			start:    1000,
+			end:      3601000,
+			expected: "1h",
+		},
+		{
+			name:     "1 hour 20 minutes",
+			start:    1000,
+			end:      4801000,
+			expected: "1h20m",
+		},
+		{
+			name:     "34 seconds",
+			start:    1000,
+			end:      35000,
+			expected: "34s",
 		},
 	}
 
@@ -54,18 +78,18 @@ func TestFormatTimestampDiffSeconds(t *testing.T) {
 func TestGetCurrentTimeFormatted(t *testing.T) {
 	result := getCurrentTimeFormatted()
 
-	// Check that the result has the correct format (HH:MM:SS)
-	if len(result) != 8 {
-		t.Errorf("getCurrentTimeFormatted() length = %d, want 8", len(result))
+	// Check that the result has the correct format (H:MM AM/PM or HH:MM AM/PM)
+	if len(result) < 7 || len(result) > 8 {
+		t.Errorf("getCurrentTimeFormatted() length = %d, want 7 or 8", len(result))
 	}
 
-	// Check that it has colons in the right places
-	if result[2] != ':' || result[5] != ':' {
-		t.Errorf("getCurrentTimeFormatted() = %s, want format HH:MM:SS", result)
+	// Check that it ends with AM or PM
+	if !strings.HasSuffix(result, " AM") && !strings.HasSuffix(result, " PM") {
+		t.Errorf("getCurrentTimeFormatted() = %s, want format ending with AM or PM", result)
 	}
 
 	// Parse it to ensure it's a valid time
-	_, err := time.Parse("15:04:05", result)
+	_, err := time.Parse("3:04 PM", result)
 	if err != nil {
 		t.Errorf("getCurrentTimeFormatted() returned invalid time format: %s, error: %v", result, err)
 	}
@@ -99,14 +123,14 @@ func TestRenderAssistantMessage_TimeDisplay(t *testing.T) {
 
 	content := uiMessages[0].content
 
-	// Check that the content contains both current time format and duration in seconds
-	// The format should be "HH:MM:SS (X.Xs)"
+	// Check that the content contains both current time format and duration
+	// The format should be "H:MM AM/PM (Xs)" or "HH:MM AM/PM (Xs)"
 	if !strings.Contains(content, ":") {
 		t.Errorf("Message content should contain time with colons, got: %s", content)
 	}
 
-	if !strings.Contains(content, ".") {
-		t.Errorf("Message content should contain duration with decimal seconds, got: %s", content)
+	if !strings.Contains(content, "M") {
+		t.Errorf("Message content should contain AM or PM, got: %s", content)
 	}
 
 	if !strings.Contains(content, "s") {
