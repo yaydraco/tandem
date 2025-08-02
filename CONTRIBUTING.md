@@ -1,187 +1,40 @@
 # Contributing to Tandem
 
-Thank you for your interest in contributing to Tandem! This guide will help you get started with the development environment and contribute effectively to the project.
+## Development Setup
 
-## Table of Contents
+### Requirements
 
-- [Overview](#overview)
-- [Prerequisites](#prerequisites)
-- [Development Environment Setup](#development-environment-setup)
-- [Building the Project](#building-the-project)
-- [Running the Project](#running-the-project)
+- **Go >=1.24.2**: [Download](https://golang.org/dl/)
+- **Docker**: [Install](https://docs.docker.com/get-docker/)
 
-## Overview
+### Setup Instructions
 
-Tandem is a terminal-based application that provides a swarm of AI agents to assist in penetration testing engagements. The project is built with Go and uses a Terminal User Interface (TUI) powered by Bubble Tea. It integrates with multiple AI providers and maintains engagement context through Rules of Engagement (RoE) files.
+**For Nix/NixOS users:**
+```bash
+nix develop
+```
 
-### Key Technologies
+**For everyone else:**
 
-- **Go 1.24.2+**: Primary programming language
-- **Docker**: Container runtime for tool execution
-- **Nix Flake**: Development environment management
-
-## Prerequisites
-
-Before you begin, ensure you have the following installed:
-
-### Required
-
-1. **Docker**
-   - Install Docker: https://docs.docker.com/get-docker/
-   - Verify: `docker --version`
-
-2. **Go 1.24.2+**
-   - Download from: https://golang.org/dl/
-   - Verify: `go version`
-
-### Optional
-
-1. **Nix Package Manager** (for advanced users)
-   - Install Nix: https://nixos.org/download
-   - Enable flakes: `echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
-
-2. **Vagrant** (for testing environments)
-   - Download from: https://www.vagrantup.com/downloads
-   - Used for setting up vulnerable lab environments (Metasploitable3)
-
-3. **Git** (for version control)
-   - Most systems have this pre-installed
-
-## Development Environment Setup
-
-### Standard Setup
-
-1. **Clone the repository**:
+1. Clone the repository:
    ```bash
    git clone https://github.com/yaydraco/tandem.git
    cd tandem
    ```
 
-2. **Set up environment variables**:
-   ```bash
-   cp .example.env .env
-   ```
-   
-   Edit `.env` and add your API keys for the AI providers you want to use:
-   ```bash
-   GEMINI_API_KEY=your_gemini_api_key_here
-   OPENAI_API_KEY=your_openai_api_key_here
-   GROQ_API_KEY=your_groq_api_key_here
-   ANTHROPIC_API_KEY=your_anthropic_api_key_here
-   # Add other providers as needed
-   ```
-
-3. **Install dependencies**:
+2. Install dependencies:
    ```bash
    go mod download
    ```
 
-4. **Install development tools**:
-   ```bash
-   go install golang.org/x/tools/gopls@latest
-   ```
-
-### Using Nix (Optional)
-
-If you prefer to use Nix for a reproducible development environment:
-
-1. **Clone the repository** (if not done already):
-   ```bash
-   git clone https://github.com/yaydraco/tandem.git
-   cd tandem
-   ```
-
-2. **Set up environment variables** (if not done already):
+3. Set up environment variables:
    ```bash
    cp .example.env .env
+   # Edit .env with your AI provider API keys
    ```
-   
-   Edit `.env` and add your API keys for the AI providers you want to use.
 
-3. **Enter the development shell**:
+4. Build and run:
    ```bash
-   nix develop
+   go build -o tandem
+   ./tandem
    ```
-
-   This will automatically set up:
-   - Go compiler and tools
-   - Go language server (gopls)
-   - Go development tools
-   - Docker for container runtime
-   - Vagrant for lab environments
-   - Starship prompt configuration
-
-## Building the Project
-
-### Standard Build
-
-```bash
-# Build the main binary
-go build -o tandem
-
-# Build all packages (useful for checking compilation)
-go build ./...
-```
-
-### Development Build
-
-```bash
-# Build with verbose output (useful for debugging)
-go build -v ./...
-
-# Build and run in one command
-go run main.go
-```
-
-### Cross-platform Build
-
-```bash
-# Build for Linux
-GOOS=linux GOARCH=amd64 go build -o tandem-linux
-
-# Build for macOS
-GOOS=darwin GOARCH=amd64 go build -o tandem-macos
-
-# Build for Windows
-GOOS=windows GOARCH=amd64 go build -o tandem.exe
-```
-
-## Running the Project
-
-### Prerequisites for Running
-
-1. **Create configuration directory**:
-   ```bash
-   mkdir -p .tandem
-   ```
-
-2. **Set up API keys** (if not done already):
-   Ensure your `.env` file contains the necessary API keys for the AI providers you want to use.
-
-3. **Create Rules of Engagement** (optional but recommended):
-   ```bash
-   echo "# Rules of Engagement
-
-   ## Scope
-   - Target: test.example.com
-   - Authorization: Development testing only
-
-   ## Constraints
-   - No production systems
-   - Local testing environment only" > .tandem/RoE.md
-   ```
-
-### Running the Application
-
-```bash
-# Run directly
-./tandem
-
-# Or run with Go
-go run main.go
-
-# Run with debug logging (if supported)
-DEBUG=1 ./tandem
-```
-
-The application will start the Terminal User Interface (TUI) where you can interact with the AI agent swarm.
