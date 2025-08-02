@@ -179,9 +179,6 @@ func (g *geminiClient) send(ctx context.Context, messages []message.Message, too
 	lastMsg := geminiMessages[len(geminiMessages)-1]
 	
 	systemMessage := g.providerOptions.systemMessage
-	if expectedOutput != nil && *expectedOutput != "" {
-		systemMessage += "\n\nExpected output format/type: " + *expectedOutput
-	}
 	
 	config := &genai.GenerateContentConfig{
 		MaxOutputTokens: int32(g.providerOptions.maxTokens),
@@ -189,6 +186,21 @@ func (g *geminiClient) send(ctx context.Context, messages []message.Message, too
 			Parts: []*genai.Part{{Text: systemMessage}},
 		},
 	}
+
+	// Add structured output via response schema if expectedOutput is provided
+	if expectedOutput != nil && *expectedOutput != "" {
+		config.ResponseSchema = &genai.Schema{
+			Type: genai.TypeObject,
+			Properties: map[string]*genai.Schema{
+				"response": {
+					Type:        genai.TypeString,
+					Description: *expectedOutput,
+				},
+			},
+			Required: []string{"response"},
+		}
+	}
+
 	if len(tools) > 0 {
 		config.Tools = g.convertTools(tools)
 	}
@@ -273,9 +285,6 @@ func (g *geminiClient) stream(ctx context.Context, messages []message.Message, t
 	lastMsg := geminiMessages[len(geminiMessages)-1]
 	
 	systemMessage := g.providerOptions.systemMessage
-	if expectedOutput != nil && *expectedOutput != "" {
-		systemMessage += "\n\nExpected output format/type: " + *expectedOutput
-	}
 	
 	config := &genai.GenerateContentConfig{
 		MaxOutputTokens: int32(g.providerOptions.maxTokens),
@@ -283,6 +292,21 @@ func (g *geminiClient) stream(ctx context.Context, messages []message.Message, t
 			Parts: []*genai.Part{{Text: systemMessage}},
 		},
 	}
+
+	// Add structured output via response schema if expectedOutput is provided
+	if expectedOutput != nil && *expectedOutput != "" {
+		config.ResponseSchema = &genai.Schema{
+			Type: genai.TypeObject,
+			Properties: map[string]*genai.Schema{
+				"response": {
+					Type:        genai.TypeString,
+					Description: *expectedOutput,
+				},
+			},
+			Required: []string{"response"},
+		}
+	}
+
 	if len(tools) > 0 {
 		config.Tools = g.convertTools(tools)
 	}

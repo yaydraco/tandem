@@ -186,12 +186,9 @@ func newCopilotClient(opts providerClientOptions) CopilotClient {
 	}
 }
 
-func (c *copilotClient) convertMessages(messages []message.Message, expectedOutput *string) (copilotMessages []openai.ChatCompletionMessageParamUnion) {
+func (c *copilotClient) convertMessages(messages []message.Message) (copilotMessages []openai.ChatCompletionMessageParamUnion) {
 	// Add system message first
 	systemMessage := c.providerOptions.systemMessage
-	if expectedOutput != nil && *expectedOutput != "" {
-		systemMessage += "\n\nExpected output format/type: " + *expectedOutput
-	}
 	copilotMessages = append(copilotMessages, openai.SystemMessage(systemMessage))
 
 	for _, msg := range messages {
@@ -284,11 +281,34 @@ func (c *copilotClient) finishReason(reason string) message.FinishReason {
 	}
 }
 
-func (c *copilotClient) preparedParams(messages []openai.ChatCompletionMessageParamUnion, tools []openai.ChatCompletionToolParam) openai.ChatCompletionNewParams {
+func (c *copilotClient) preparedParams(messages []openai.ChatCompletionMessageParamUnion, tools []openai.ChatCompletionToolParam, expectedOutput *string) openai.ChatCompletionNewParams {
 	params := openai.ChatCompletionNewParams{
 		Model:    openai.ChatModel(c.providerOptions.model.APIModel),
 		Messages: messages,
 		Tools:    tools,
+	}
+
+	// Add structured output via response_format if expectedOutput is provided
+	if expectedOutput != nil && *expectedOutput != "" {
+		params.ResponseFormat = openai.ChatCompletionNewParamsResponseFormatUnion{
+			OfJSONSchema: &shared.ResponseFormatJSONSchemaParam{
+				JSONSchema: shared.ResponseFormatJSONSchemaJSONSchemaParam{
+					Name:        "structured_output",
+					Description: openai.String("Structured output as requested"),
+					Strict:      openai.Bool(true),
+					Schema: map[string]interface{}{
+						"type": "object",
+						"properties": map[string]interface{}{
+							"response": map[string]interface{}{
+								"type":        "string",
+								"description": *expectedOutput,
+							},
+						},
+						"required": []string{"response"},
+					},
+				},
+			},
+		}
 	}
 
 	if c.providerOptions.model.CanReason == true {
@@ -311,7 +331,7 @@ func (c *copilotClient) preparedParams(messages []openai.ChatCompletionMessagePa
 }
 
 func (c *copilotClient) send(ctx context.Context, messages []message.Message, tools []toolsPkg.BaseTool, expectedOutput *string) (response *ProviderResponse, err error) {
-	params := c.preparedParams(c.convertMessages(messages, expectedOutput), c.convertTools(tools))
+	params := c.preparedParams(c.convertMessages(messages), c.convertTools(tools), expectedOutput)
 	cfg := config.Get()
 	var sessionId string
 	requestSeqId := (len(messages) + 1) / 2
@@ -378,7 +398,7 @@ func (c *copilotClient) send(ctx context.Context, messages []message.Message, to
 }
 
 func (c *copilotClient) stream(ctx context.Context, messages []message.Message, tools []toolsPkg.BaseTool, expectedOutput *string) <-chan ProviderEvent {
-	params := c.preparedParams(c.convertMessages(messages, expectedOutput), c.convertTools(tools))
+	params := c.preparedParams(c.convertMessages(messages), c.convertTools(tools), expectedOutput)
 	params.StreamOptions = openai.ChatCompletionStreamOptionsParam{
 		IncludeUsage: openai.Bool(true),
 	}
