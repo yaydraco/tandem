@@ -9,18 +9,18 @@
 
 ### Setup Instructions
 
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yaydraco/tandem.git
+   cd tandem
+   ```
+
 **For Nix/NixOS users:**
 ```bash
 nix develop
 ```
 
 **For everyone else:**
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yaydraco/tandem.git
-   cd tandem
-   ```
 
 2. Install dependencies:
    ```bash
