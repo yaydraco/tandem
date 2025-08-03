@@ -259,7 +259,7 @@ func (m *messagesCmp) View() string {
 	if len(m.messages) == 0 {
 		content := baseStyle.
 			Width(m.width).
-			Height(m.height - 3).
+			Height(m.height - 2).
 			Render(
 				m.initialScreen(),
 			)
