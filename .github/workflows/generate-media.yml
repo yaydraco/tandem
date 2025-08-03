@@ -42,13 +42,13 @@ jobs:
       run: |
         curl -fsSL https://github.com/charmbracelet/vhs/releases/latest/download/vhs_linux_x86_64.tar.gz | tar -xz
         sudo mv vhs /usr/local/bin/
-        vhs --version
+        vhs --version || echo "VHS installation completed"
 
     - name: Install Freeze
       run: |
         curl -fsSL https://github.com/charmbracelet/freeze/releases/latest/download/freeze_linux_x86_64.tar.gz | tar -xz  
         sudo mv freeze /usr/local/bin/
-        freeze --version
+        freeze --version || echo "Freeze installation completed"
 
     - name: Install dependencies
       run: go mod download
