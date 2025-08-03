@@ -133,12 +133,12 @@ func renderAssistantMessage(
 	if finished {
 		switch finishData.Reason {
 		case message.FinishReasonEndTurn:
-			currentTime := getCurrentTimeFormatted()
+			createdTime := formatTimeFromTimestamp(msg.CreatedAt)
 			took := formatTimestampDiffSeconds(msg.CreatedAt, finishData.Time)
 			info = append(info, baseStyle.
 				Width(width-1).
 				Foreground(t.TextMuted()).
-				Render(fmt.Sprintf(" %s (%s)", currentTime, took)),
+				Render(fmt.Sprintf(" %s (%s)", createdTime, took)),
 			)
 		case message.FinishReasonCanceled:
 			info = append(info, baseStyle.
@@ -497,7 +497,8 @@ func formatTimestampDiffSeconds(start, end int64) string {
 	return fmt.Sprintf("%dh%dm", hours, minutes)
 }
 
-// Helper function to get current time formatted as HH:MM AM/PM
-func getCurrentTimeFormatted() string {
-	return time.Now().Format("3:04 PM")
+// Helper function to format timestamp as HH:MM AM/PM
+func formatTimeFromTimestamp(timestamp int64) string {
+	t := time.Unix(timestamp/1000, 0) // Convert from milliseconds to seconds
+	return t.Format("3:04 PM")
 }

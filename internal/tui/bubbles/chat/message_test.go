@@ -75,30 +75,32 @@ func TestFormatTimestampDiffSeconds(t *testing.T) {
 	}
 }
 
-func TestGetCurrentTimeFormatted(t *testing.T) {
-	result := getCurrentTimeFormatted()
-
-	// Check that the result has the correct format (H:MM AM/PM or HH:MM AM/PM)
-	if len(result) < 7 || len(result) > 8 {
-		t.Errorf("getCurrentTimeFormatted() length = %d, want 7 or 8", len(result))
-	}
-
-	// Check that it ends with AM or PM
-	if !strings.HasSuffix(result, " AM") && !strings.HasSuffix(result, " PM") {
-		t.Errorf("getCurrentTimeFormatted() = %s, want format ending with AM or PM", result)
-	}
+func TestFormatTimeFromTimestamp(t *testing.T) {
+	// Test with a known timestamp (January 1, 2024 3:45 PM UTC)
+	timestamp := int64(1704118500000) // milliseconds
+	result := formatTimeFromTimestamp(timestamp)
 
 	// Parse it to ensure it's a valid time
 	_, err := time.Parse("3:04 PM", result)
 	if err != nil {
-		t.Errorf("getCurrentTimeFormatted() returned invalid time format: %s, error: %v", result, err)
+		t.Errorf("formatTimeFromTimestamp() returned invalid time format: %s, error: %v", result, err)
+	}
+
+	// Check that it ends with AM or PM
+	if !strings.HasSuffix(result, " AM") && !strings.HasSuffix(result, " PM") {
+		t.Errorf("formatTimeFromTimestamp() = %s, want format ending with AM or PM", result)
+	}
+
+	// Check that the result has the correct format (H:MM AM/PM or HH:MM AM/PM)
+	if len(result) < 7 || len(result) > 8 {
+		t.Errorf("formatTimeFromTimestamp() length = %d, want 7 or 8", len(result))
 	}
 }
 
 func TestRenderAssistantMessage_TimeDisplay(t *testing.T) {
-	// Create a test message with finish data
-	now := time.Now().Unix()
-	startTime := now - 2500 // 2.5 seconds ago
+	// Create a test message with finish data using fixed timestamps
+	startTime := int64(1704118500000) // January 1, 2024 3:45 PM UTC in milliseconds
+	endTime := startTime + 2500       // 2.5 seconds later
 
 	msg := message.Message{
 		ID:        "test-id",
@@ -107,7 +109,7 @@ func TestRenderAssistantMessage_TimeDisplay(t *testing.T) {
 			message.TextContent{Text: "Hello, this is a test message"},
 			message.Finish{
 				Reason: message.FinishReasonEndTurn,
-				Time:   now,
+				Time:   endTime,
 			},
 		},
 	}
@@ -123,7 +125,7 @@ func TestRenderAssistantMessage_TimeDisplay(t *testing.T) {
 
 	content := uiMessages[0].content
 
-	// Check that the content contains both current time format and duration
+	// Check that the content contains both timestamp format and duration
 	// The format should be "H:MM AM/PM (Xs)" or "HH:MM AM/PM (Xs)"
 	if !strings.Contains(content, ":") {
 		t.Errorf("Message content should contain time with colons, got: %s", content)
@@ -146,7 +148,7 @@ func TestRenderAssistantMessage_NonFinishedMessage(t *testing.T) {
 	// Create a test message without finish data
 	msg := message.Message{
 		ID:        "test-id",
-		CreatedAt: time.Now().Unix(),
+		CreatedAt: time.Now().Unix() * 1000, // Convert to milliseconds
 		Parts: []message.ContentPart{
 			message.TextContent{Text: "Hello, this is an unfinished message"},
 		},
