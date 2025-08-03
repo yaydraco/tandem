@@ -3,13 +3,13 @@ package config
 import (
 	"encoding/json"
 	"fmt"
-	"log/slog"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
 	"sync"
 
+	"github.com/charmbracelet/log"
 	"github.com/spf13/viper"
 	"github.com/yaydraco/tandem/internal/logging"
 	"github.com/yaydraco/tandem/internal/models"
@@ -121,9 +121,9 @@ func Load(workingDir string, debug bool) (*Config, error) {
 		return cfg, fmt.Errorf("failed to unmarshal config: %w", err)
 	}
 
-	defaultLevel := slog.LevelInfo
+	defaultLevel := log.InfoLevel
 	if cfg.Debug {
-		defaultLevel = slog.LevelDebug
+		defaultLevel = log.DebugLevel
 	}
 
 	// TODO: shouldn't we set this env var if the swarm.json say it so?
@@ -152,17 +152,21 @@ func Load(workingDir string, debug bool) (*Config, error) {
 		if err != nil {
 			return cfg, fmt.Errorf("failed to open log file: %w", err)
 		}
-		// Configure logger
-		logger := slog.New(slog.NewTextHandler(sloggingFileWriter, &slog.HandlerOptions{
-			Level: defaultLevel,
-		}))
-		slog.SetDefault(logger)
+		// Configure charmbracelet/log logger for file output
+		logger := log.NewWithOptions(sloggingFileWriter, log.Options{
+			Level:           defaultLevel,
+			ReportCaller:    cfg.Debug,
+			ReportTimestamp: true,
+		})
+		log.SetDefault(logger)
 	} else {
-		// Configure logger
-		logger := slog.New(slog.NewTextHandler(logging.NewWriter(), &slog.HandlerOptions{
-			Level: defaultLevel,
-		}))
-		slog.SetDefault(logger)
+		// Configure charmbracelet/log logger for TUI output
+		logger := log.NewWithOptions(logging.NewWriter(), log.Options{
+			Level:           defaultLevel,
+			ReportCaller:    cfg.Debug,
+			ReportTimestamp: true,
+		})
+		log.SetDefault(logger)
 	}
 
 	// Validate configuration

@@ -3,21 +3,22 @@ package logging
 import (
 	"encoding/json"
 	"fmt"
-	"log/slog"
 	"os"
 	"runtime"
 	"runtime/debug"
 	"sync"
 	"time"
+
+	"github.com/charmbracelet/log"
 )
 
 func Error(msg string, args ...any) {
-	slog.Error(msg, args...)
+	log.Error(msg, args...)
 }
 
 func Debug(msg string, args ...any) {
 	source := getCaller()
-	slog.Debug(msg, append([]any{"source", source}, args...)...)
+	log.Debug(msg, append([]any{"source", source}, args...)...)
 }
 
 func getCaller() string {
@@ -31,12 +32,12 @@ func getCaller() string {
 }
 
 func Warn(msg string, args ...any) {
-	slog.Warn(msg, args...)
+	log.Warn(msg, args...)
 }
 
 func Info(msg string, args ...any) {
 	source := getCaller()
-	slog.Info(msg, append([]any{"source", source}, args...)...)
+	log.Info(msg, append([]any{"source", source}, args...)...)
 }
 
 // RecoverPanic is a common function to handle panics gracefully.
@@ -74,12 +75,12 @@ func RecoverPanic(name string, cleanup func()) {
 
 func ErrorPersist(msg string, args ...any) {
 	args = append(args, persistKeyArg, true)
-	slog.Error(msg, args...)
+	log.Error(msg, args...)
 }
 
 func InfoPersist(msg string, args ...any) {
 	args = append(args, persistKeyArg, true)
-	slog.Info(msg, args...)
+	log.Info(msg, args...)
 }
 
 // Message Logging for Debug
@@ -141,7 +142,7 @@ var sessionLogMutex sync.Mutex
 
 func WarnPersist(msg string, args ...any) {
 	args = append(args, persistKeyArg, true)
-	slog.Warn(msg, args...)
+	log.Warn(msg, args...)
 }
 
 func WriteRequestMessageJson(sessionId string, requestSeqId int, message any) string {
