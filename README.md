@@ -110,6 +110,68 @@ After configuring your API keys and agent settings:
 
 3. **Interact with agents**: Use the interface to communicate with specialized agents for different phases of your penetration testing workflow.
 
+## SSH Server Mode
+
+Tandem can run as an SSH server, enabling remote multi-user access to the penetration testing interface. This is useful for distributed teams, remote engagements, or when providing centralized access to tandem's capabilities.
+
+### Quick SSH Demo
+
+To quickly test the SSH functionality:
+
+1. **Set up the demo**:
+   ```shell
+   ./setup-ssh-demo.sh
+   ```
+
+2. **Start the SSH server**:
+   ```shell
+   ./tandem ssh --host localhost --port 2222
+   ```
+
+3. **Connect from another terminal**:
+   ```shell
+   ssh localhost -p 2222
+   ```
+
+You'll see the tandem TUI interface running over SSH, allowing remote access to all penetration testing capabilities.
+
+### SSH Server Configuration
+
+The SSH server supports various configuration options:
+
+```shell
+./tandem ssh [flags]
+
+Flags:
+  -c, --cwd string        Current working directory
+  -d, --debug             Enable debug logging
+      --host string       Host to bind the SSH server to (default "localhost")
+      --key-path string   Path to SSH host key (will be generated if doesn't exist) (default ".ssh/tandem_host_key")
+      --port int          Port to bind the SSH server to (default 2222)
+```
+
+### SSH Features
+
+- **Multi-user support**: Multiple users can connect simultaneously, each with their own TUI session
+- **Automatic key management**: SSH host keys are automatically generated if they don't exist
+- **Session isolation**: Each SSH connection gets its own isolated tandem session
+- **Graceful shutdown**: Clean termination of all SSH sessions on server shutdown
+- **Secure by default**: Uses standard SSH authentication and encryption
+
+### Production Deployment
+
+For production use:
+
+1. **Configure proper authentication**: Set up SSH keys or other authentication methods as needed
+2. **Network security**: Ensure the SSH port is properly firewalled and secured
+3. **Monitoring**: Enable logging to monitor SSH connections and usage
+4. **Resource management**: Consider resource limits for concurrent sessions
+
+Example production configuration:
+```shell
+./tandem ssh --host 0.0.0.0 --port 2222 --key-path /etc/tandem/ssh_host_key
+```
+
 ## Development Instructions
 1. This project uses **Nix flake** for setting up a consistent development environment across the team, and we propose you do the same.  
 2. Create a .env file before running the ```nix develop``` command. refer to ```.example.env``` to create one.

@@ -10,3 +10,8 @@ result
 tandem
 .opencode
 OpenCode.md
+
+# SSH keys and temporary files for demo
+.ssh/
+demo-ssh-config.json
+demo-RoE.md
