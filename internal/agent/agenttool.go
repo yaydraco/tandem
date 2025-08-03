@@ -18,6 +18,7 @@ var AgentNames = []config.AgentName{
 	config.VulnerabilityScanner,
 	config.Exploiter,
 	config.Reporter,
+	config.MediaAgent,
 }
 
 type AgentToolArgs struct {
@@ -97,7 +98,13 @@ func (a *AgentTool) Run(ctx context.Context, call tools.ToolCall) (tools.ToolRes
 	}
 
 	// NOTE: you can add more tools later here if needed on AgentName basis.
-	agentTools := tools.PenetrationTestingAgentTools
+	var agentTools []tools.BaseTool
+	switch args.AgentName {
+	case config.MediaAgent:
+		agentTools = tools.MediaAgentTools
+	default:
+		agentTools = tools.PenetrationTestingAgentTools
+	}
 	agent, err := NewAgent(args.AgentName, a.sessions, a.messages, agentTools)
 	if err != nil {
 		return tools.NewTextErrorResponse("failed to create agent: " + err.Error()), nil
