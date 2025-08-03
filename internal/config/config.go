@@ -67,6 +67,9 @@ const (
 	Exploiter            AgentName = "exploiter"
 	Reporter             AgentName = "reporter"
 
+	// Content generation agents  
+	MediaAgent           AgentName = "media_agent"
+
 	// Application purpose agents
 	AgentSummarizer AgentName = "summarizer"
 	AgentTitle      AgentName = "title"

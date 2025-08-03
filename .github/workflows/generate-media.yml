@@ -1,0 +1,186 @@
+name: Generate Media Content
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/*'
+      - 'release/*'
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+    inputs:
+      media_type:
+        description: 'Type of media to generate'
+        required: true
+        default: 'both'
+        type: choice
+        options:
+        - both
+        - recording
+        - screenshot
+
+jobs:
+  generate-media:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.24.2'
+
+    - name: Install VHS
+      run: |
+        curl -fsSL https://github.com/charmbracelet/vhs/releases/latest/download/vhs_linux_x86_64.tar.gz | tar -xz
+        sudo mv vhs /usr/local/bin/
+        vhs --version || echo "VHS installation completed"
+
+    - name: Install Freeze
+      run: |
+        curl -fsSL https://github.com/charmbracelet/freeze/releases/latest/download/freeze_linux_x86_64.tar.gz | tar -xz  
+        sudo mv freeze /usr/local/bin/
+        freeze --version || echo "Freeze installation completed"
+
+    - name: Install dependencies
+      run: go mod download
+
+    - name: Build Tandem
+      run: go build -o tandem .
+
+    - name: Set up environment
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        COPILOT_API_KEY: ${{ secrets.COPILOT_API_KEY }}
+      run: |
+        echo "GEMINI_API_KEY=${GEMINI_API_KEY}" > .env
+        echo "GROQ_API_KEY=${GROQ_API_KEY}" >> .env
+        echo "OPENAI_API_KEY=${OPENAI_API_KEY}" >> .env
+        echo "ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}" >> .env
+        echo "COPILOT_API_KEY=${COPILOT_API_KEY}" >> .env
+
+    - name: Create media content directory
+      run: mkdir -p media/generated
+
+    - name: Create VHS tape file for demo
+      run: |
+        cat > media/tandem-demo.tape << 'EOF'
+        Output media/generated/tandem-demo.gif
+        
+        Set FontSize 14
+        Set Width 1200
+        Set Height 800
+        Set Theme "Dracula"
+        
+        Type "./tandem --help"
+        Enter
+        Sleep 2s
+        
+        Type "echo 'Demonstrating Tandem - AI Agent Swarm for Penetration Testing'"
+        Enter
+        Sleep 1s
+        
+        Type "./tandem --version"  
+        Enter
+        Sleep 2s
+        
+        Type "# Tandem brings together specialized AI agents for penetration testing"
+        Enter
+        Sleep 1s
+        
+        Type "# Each agent has specific expertise: reconnaissance, vulnerability scanning, exploitation, and reporting"
+        Enter
+        Sleep 2s
+        EOF
+
+    - name: Create Freeze config for code screenshots
+      run: |
+        cat > media/freeze-config.json << 'EOF'
+        {
+          "theme": "dracula",
+          "font": {
+            "family": "JetBrains Mono",
+            "size": 14
+          },
+          "padding": [40, 80],
+          "shadow": {
+            "blur": 20,
+            "x": 10,
+            "y": 10
+          },
+          "border": {
+            "radius": 8,
+            "width": 2,
+            "color": "#515151"
+          }
+        }
+        EOF
+
+    - name: Generate media with Tandem Media Agent
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        COPILOT_API_KEY: ${{ secrets.COPILOT_API_KEY }}
+      run: |
+        # Use Tandem's media agent to create promotional content
+        ./tandem -p "As the media agent, create a terminal recording using VHS and code screenshots using Freeze to showcase the latest Tandem features. Use the tape file at media/tandem-demo.tape for the recording and create screenshots of key Go files like main.go and agent configuration. Focus on highlighting the AI agent swarm capabilities." -f json || echo "Media generation completed with status $?"
+
+    - name: Generate terminal recording with VHS
+      if: ${{ github.event.inputs.media_type == 'recording' || github.event.inputs.media_type == 'both' || github.event.inputs.media_type == '' }}
+      run: |
+        cd media && vhs tandem-demo.tape
+        ls -la generated/
+
+    - name: Generate code screenshots with Freeze  
+      if: ${{ github.event.inputs.media_type == 'screenshot' || github.event.inputs.media_type == 'both' || github.event.inputs.media_type == '' }}
+      run: |
+        freeze main.go --config media/freeze-config.json --output media/generated/main-go-screenshot.png
+        freeze .tandem/swarm.json --config media/freeze-config.json --output media/generated/swarm-config-screenshot.png
+        freeze internal/agent/agent.go --config media/freeze-config.json --output media/generated/agent-code-screenshot.png
+
+    - name: Upload media artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: tandem-media-${{ github.sha }}
+        path: media/generated/
+        retention-days: 30
+
+    - name: Comment on PR with media
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+          
+          const mediaDir = 'media/generated';
+          const files = fs.readdirSync(mediaDir);
+          
+          let comment = '## 🎬 Generated Media Content\n\n';
+          comment += 'New media content has been generated to showcase the changes in this PR:\n\n';
+          
+          files.forEach(file => {
+            comment += `- 📄 \`${file}\`\n`;
+          });
+          
+          comment += '\n💡 Download the artifacts to view the generated recordings and screenshots.';
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });

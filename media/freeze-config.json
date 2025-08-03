@@ -1,0 +1,24 @@
+{
+  "theme": "dracula",
+  "font": {
+    "family": "JetBrains Mono",
+    "size": 14
+  },
+  "window": {
+    "title": "Tandem - AI Agent Swarm",
+    "show_title": true
+  },
+  "padding": [40, 80],
+  "shadow": {
+    "blur": 20,
+    "x": 0,
+    "y": 10,
+    "color": "#00000040"
+  },
+  "border": {
+    "radius": 8,
+    "width": 0,
+    "color": "#515151"
+  },
+  "background": "#282a36"
+}

@@ -68,6 +68,13 @@ The following AI providers are supported:
 - **Purpose**: Assigns penetration testing tasks to appropriate specialized agents
 - **Model**: `copilot.gemini-2.5-pro`
 
+**Media Agent** *(NEW)*
+- **Role**: Promotional content generation using VHS and Freeze
+- **Purpose**: Creates terminal recordings and code screenshots for marketing and documentation
+- **Tools**: VHS (terminal recordings), Freeze (code screenshots)
+- **Model**: `copilot.claude-sonnet-4`
+- **Use Cases**: Social media content, feature demonstrations, release announcements
+
 #### Customizing Agent Configuration
 
 You can modify `.tandem/swarm.json` to:
@@ -109,6 +116,21 @@ After configuring your API keys and agent settings:
    ```
 
 3. **Interact with agents**: Use the interface to communicate with specialized agents for different phases of your penetration testing workflow.
+
+### Media Generation
+
+Tandem includes automated media generation capabilities:
+
+- **GitHub Actions**: Automatically generates promotional content on pushes to main/feature branches
+- **Manual Generation**: Use the media agent directly via CLI or TUI
+- **Content Types**: Terminal recordings (VHS) and code screenshots (Freeze)
+
+```shell
+# Generate media content manually
+tandem -p "Create promotional content showcasing Tandem's latest features"
+```
+
+See `media/USAGE.md` for detailed media agent documentation.
 
 ## Development Instructions
 1. This project uses **Nix flake** for setting up a consistent development environment across the team, and we propose you do the same.  

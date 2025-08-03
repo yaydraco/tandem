@@ -88,3 +88,9 @@ func GetContextValues(ctx context.Context) (string, string) {
 var PenetrationTestingAgentTools = []BaseTool{
 	NewDockerCli(),
 }
+
+// Media Agent Tools for generating promotional content
+var MediaAgentTools = []BaseTool{
+	NewVHS(),
+	NewFreeze(),
+}
