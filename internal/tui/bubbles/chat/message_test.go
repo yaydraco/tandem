@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yyovil/tandem/internal/message"
+	"github.com/yaydraco/tandem/internal/message"
 )
 
 func TestFormatTimestampDiffSeconds(t *testing.T) {
