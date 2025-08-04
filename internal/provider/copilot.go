@@ -318,11 +318,11 @@ func (c *copilotClient) send(ctx context.Context, messages []message.Message, to
 		if sid, ok := ctx.Value(toolsPkg.SessionIDContextKey).(string); ok {
 			sessionId = sid
 		}
-		jsonData, _ := json.Marshal(params)
 		if sessionId != "" {
 			filepath := logging.WriteRequestMessageJson(sessionId, requestSeqId, params)
 			logging.Debug("Prepared messages", "filepath", filepath)
 		} else {
+			jsonData, _ := json.MarshalIndent(params, "", "  ")
 			logging.Debug("Prepared messages", "messages", string(jsonData))
 		}
 	}
@@ -387,11 +387,11 @@ func (c *copilotClient) stream(ctx context.Context, messages []message.Message, 
 		if sid, ok := ctx.Value(toolsPkg.SessionIDContextKey).(string); ok {
 			sessionId = sid
 		}
-		jsonData, _ := json.Marshal(params)
 		if sessionId != "" {
 			filepath := logging.WriteRequestMessageJson(sessionId, requestSeqId, params)
 			logging.Debug("Prepared messages", "filepath", filepath)
 		} else {
+			jsonData, _ := json.MarshalIndent(params, "", "  ")
 			logging.Debug("Prepared messages", "messages", string(jsonData))
 		}
 

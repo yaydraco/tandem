@@ -200,7 +200,7 @@ func (o *openaiClient) send(ctx context.Context, messages []message.Message, too
 	params := o.preparedParams(o.convertMessages(messages), o.convertTools(tools))
 	cfg := config.Get()
 	if cfg.Debug {
-		jsonData, _ := json.Marshal(params)
+		jsonData, _ := json.MarshalIndent(params, "", "  ")
 		logging.Debug("Prepared messages", "messages", string(jsonData))
 	}
 	attempts := 0
@@ -257,7 +257,7 @@ func (o *openaiClient) stream(ctx context.Context, messages []message.Message, t
 
 	cfg := config.Get()
 	if cfg.Debug {
-		jsonData, _ := json.Marshal(params)
+		jsonData, _ := json.MarshalIndent(params, "", "  ")
 		logging.Debug("Prepared messages", "messages", string(jsonData))
 	}
 

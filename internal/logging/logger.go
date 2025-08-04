@@ -3,22 +3,21 @@ package logging
 import (
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"os"
 	"runtime"
 	"runtime/debug"
 	"sync"
 	"time"
-
-	"github.com/charmbracelet/log"
 )
 
 func Error(msg string, args ...any) {
-	log.Error(msg, args...)
+	slog.Error(msg, args...)
 }
 
 func Debug(msg string, args ...any) {
 	source := getCaller()
-	log.Debug(msg, append([]any{"source", source}, args...)...)
+	slog.Debug(msg, append([]any{"source", source}, args...)...)
 }
 
 func getCaller() string {
@@ -32,12 +31,12 @@ func getCaller() string {
 }
 
 func Warn(msg string, args ...any) {
-	log.Warn(msg, args...)
+	slog.Warn(msg, args...)
 }
 
 func Info(msg string, args ...any) {
 	source := getCaller()
-	log.Info(msg, append([]any{"source", source}, args...)...)
+	slog.Info(msg, append([]any{"source", source}, args...)...)
 }
 
 // RecoverPanic is a common function to handle panics gracefully.
@@ -75,12 +74,12 @@ func RecoverPanic(name string, cleanup func()) {
 
 func ErrorPersist(msg string, args ...any) {
 	args = append(args, persistKeyArg, true)
-	log.Error(msg, args...)
+	slog.Error(msg, args...)
 }
 
 func InfoPersist(msg string, args ...any) {
 	args = append(args, persistKeyArg, true)
-	log.Info(msg, args...)
+	slog.Info(msg, args...)
 }
 
 // Message Logging for Debug
@@ -90,7 +89,7 @@ func WriteToolResultsJson(sessionId string, requestSeqId int, toolResults any) s
 	if MessageDir == "" || sessionId == "" || requestSeqId <= 0 {
 		return ""
 	}
-	toolResultsJson, err := json.Marshal(toolResults)
+	toolResultsJson, err := json.MarshalIndent(toolResults, "", "  ")
 	if err != nil {
 		Error("Failed to marshal tool results", "session_id", sessionId, "request_seq_id", requestSeqId, "error", err)
 		return ""
@@ -142,14 +141,14 @@ var sessionLogMutex sync.Mutex
 
 func WarnPersist(msg string, args ...any) {
 	args = append(args, persistKeyArg, true)
-	log.Warn(msg, args...)
+	slog.Warn(msg, args...)
 }
 
 func WriteRequestMessageJson(sessionId string, requestSeqId int, message any) string {
 	if MessageDir == "" || sessionId == "" || requestSeqId <= 0 {
 		return ""
 	}
-	msgJson, err := json.Marshal(message)
+	msgJson, err := json.MarshalIndent(message, "", "  ")
 	if err != nil {
 		Error("Failed to marshal message", "session_id", sessionId, "request_seq_id", requestSeqId, "error", err)
 		return ""
@@ -170,7 +169,7 @@ func AppendToStreamSessionLogJson(sessionId string, requestSeqId int, jsonableCh
 	if MessageDir == "" || sessionId == "" || requestSeqId <= 0 {
 		return ""
 	}
-	chunkJson, err := json.Marshal(jsonableChunk)
+	chunkJson, err := json.MarshalIndent(jsonableChunk, "", "  ")
 	if err != nil {
 		Error("Failed to marshal message", "session_id", sessionId, "request_seq_id", requestSeqId, "error", err)
 		return ""
@@ -182,7 +181,7 @@ func WriteChatResponseJson(sessionId string, requestSeqId int, response any) str
 	if MessageDir == "" || sessionId == "" || requestSeqId <= 0 {
 		return ""
 	}
-	responseJson, err := json.Marshal(response)
+	responseJson, err := json.MarshalIndent(response, "", "  ")
 	if err != nil {
 		Error("Failed to marshal response", "session_id", sessionId, "request_seq_id", requestSeqId, "error", err)
 		return ""

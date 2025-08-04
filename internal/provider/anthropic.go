@@ -194,7 +194,7 @@ func (a *anthropicClient) send(ctx context.Context, messages []message.Message, 
 	preparedMessages := a.preparedMessages(a.convertMessages(messages), a.convertTools(tools))
 	cfg := config.Get()
 	if cfg.Debug {
-		jsonData, _ := json.Marshal(preparedMessages)
+		jsonData, _ := json.MarshalIndent(preparedMessages, "", "  ")
 		logging.Debug("Prepared messages", "messages", string(jsonData))
 	}
 
@@ -249,11 +249,11 @@ func (a *anthropicClient) stream(ctx context.Context, messages []message.Message
 		if sid, ok := ctx.Value(toolsPkg.SessionIDContextKey).(string); ok {
 			sessionId = sid
 		}
-		jsonData, _ := json.Marshal(preparedMessages)
 		if sessionId != "" {
 			filepath := logging.WriteRequestMessageJson(sessionId, requestSeqId, preparedMessages)
 			logging.Debug("Prepared messages", "filepath", filepath)
 		} else {
+			jsonData, _ := json.MarshalIndent(preparedMessages, "", "  ")
 			logging.Debug("Prepared messages", "messages", string(jsonData))
 		}
 
