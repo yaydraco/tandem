@@ -89,7 +89,7 @@ func WriteToolResultsJson(sessionId string, requestSeqId int, toolResults any) s
 	if MessageDir == "" || sessionId == "" || requestSeqId <= 0 {
 		return ""
 	}
-	toolResultsJson, err := json.Marshal(toolResults)
+	toolResultsJson, err := json.MarshalIndent(toolResults, "", "  ")
 	if err != nil {
 		Error("Failed to marshal tool results", "session_id", sessionId, "request_seq_id", requestSeqId, "error", err)
 		return ""
@@ -148,7 +148,7 @@ func WriteRequestMessageJson(sessionId string, requestSeqId int, message any) st
 	if MessageDir == "" || sessionId == "" || requestSeqId <= 0 {
 		return ""
 	}
-	msgJson, err := json.Marshal(message)
+	msgJson, err := json.MarshalIndent(message, "", "  ")
 	if err != nil {
 		Error("Failed to marshal message", "session_id", sessionId, "request_seq_id", requestSeqId, "error", err)
 		return ""
@@ -169,7 +169,7 @@ func AppendToStreamSessionLogJson(sessionId string, requestSeqId int, jsonableCh
 	if MessageDir == "" || sessionId == "" || requestSeqId <= 0 {
 		return ""
 	}
-	chunkJson, err := json.Marshal(jsonableChunk)
+	chunkJson, err := json.MarshalIndent(jsonableChunk, "", "  ")
 	if err != nil {
 		Error("Failed to marshal message", "session_id", sessionId, "request_seq_id", requestSeqId, "error", err)
 		return ""
@@ -181,7 +181,7 @@ func WriteChatResponseJson(sessionId string, requestSeqId int, response any) str
 	if MessageDir == "" || sessionId == "" || requestSeqId <= 0 {
 		return ""
 	}
-	responseJson, err := json.Marshal(response)
+	responseJson, err := json.MarshalIndent(response, "", "  ")
 	if err != nil {
 		Error("Failed to marshal response", "session_id", sessionId, "request_seq_id", requestSeqId, "error", err)
 		return ""

@@ -180,7 +180,7 @@ func (g *geminiClient) send(ctx context.Context, messages []message.Message, too
 
 	cfg := config.Get()
 	if cfg.Debug {
-		jsonData, _ := json.Marshal(geminiMessages)
+		jsonData, _ := json.MarshalIndent(geminiMessages, "", "  ")
 		logging.Debug("Prepared messages", "messages", string(jsonData))
 	}
 
@@ -261,7 +261,7 @@ func (g *geminiClient) stream(ctx context.Context, messages []message.Message, t
 
 	cfg := config.Get()
 	if cfg.Debug {
-		jsonData, _ := json.Marshal(geminiMessages)
+		jsonData, _ := json.MarshalIndent(geminiMessages, "", "  ")
 		logging.Debug("Prepared messages", "messages", string(jsonData))
 	}
 
