@@ -1,4 +1,4 @@
-.env*
+env*
 !.env.example
 .go
 .vagrant
@@ -10,3 +10,5 @@ result
 tandem
 .opencode
 OpenCode.md
+.predicted_expected_output.json
+.env
